@@ -9,3 +9,4 @@ make_EHelper(nemu_trap);
 
 /*add*/
 make_EHelper(call);
+make_EHelper(push);
