@@ -206,10 +206,15 @@ make_DHelper(test_I) {
 }
 
 make_DHelper(SI2E) {
+  printf("here1");
   assert(id_dest->width == 2 || id_dest->width == 4);
+  printf("here2");
   decode_op_rm(eip, id_dest, true, NULL, false);
+  printf("here3");
   id_src->width = 1;
+  printf("here4");
   decode_op_SI(eip, id_src, true);
+  printf("here5s");
   if (id_dest->width == 2) {
     id_src->val &= 0xffff;
   }
