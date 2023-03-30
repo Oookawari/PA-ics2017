@@ -5,6 +5,7 @@
 DecodeInfo decoding;
 rtlreg_t t0, t1, t2, t3;
 const rtlreg_t tzero = 0;
+rtlreg_t rtl_temp;
 
 #define make_DopHelper(name) void concat(decode_op_, name) (vaddr_t *eip, Operand *op, bool load_val)
 
