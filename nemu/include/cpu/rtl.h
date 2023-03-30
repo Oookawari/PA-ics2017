@@ -5,7 +5,6 @@
 
 extern rtlreg_t t0, t1, t2, t3;
 extern const rtlreg_t tzero;
-
 extern rtlreg_t rtl_temp;
 
 static inline void rtl_li2temp(uint32_t imm) {
