@@ -214,7 +214,7 @@ make_DHelper(SI2E) {
     id_src->val &= 0xffff;
   }
   
-  printf("\n\n\nhere1\n\n\n");
+  printf("now decoding ext_opcode is %d \n", decoding.ext_opcode);
 }
 
 make_DHelper(SI_E2G) {
