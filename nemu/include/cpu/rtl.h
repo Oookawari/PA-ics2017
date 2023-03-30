@@ -117,10 +117,12 @@ static inline void rtl_sr(int r, int width, const rtlreg_t* src1) {
 
 #define make_rtl_setget_eflags(f) \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
-    TODO(); \
+    if(src) (&cpu)->f = 1; \
+    else (&cpu)->f = 0;\
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
-    TODO(); \
+    if((&cpu)->f) rtl_li(dest, 1); \
+    else rtl_li(dest, 0);\
   }
 
 make_rtl_setget_eflags(CF)
@@ -140,7 +142,19 @@ static inline void rtl_not(rtlreg_t* dest) {
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  TODO();
+  assert(width == 1 || width == 2 || width == 4);
+  if(width == 1){
+    *dest = *src1 & 0x0000007F;
+    (*src1 & 0x00000080) ? (*dest = *dest | (0xFFFFFF80)) : (*dest = *dest | (0x00000000)); 
+  } else if(width == 2) {
+    
+    *dest = *src1 & 0x00007F00;
+    (*src1 & 0x00008000) ? (*dest = *dest | (0xFFFF8000)) : (*dest = *dest | (0x00000000)); 
+  } else if(width == 4) {
+
+    *dest = *src1 & 0x7F000000;
+    (*src1 & 0x80000000) ? (*dest = *dest | (0x80000000)) : (*dest = *dest | (0x00000000)); 
+  }
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
@@ -176,17 +190,91 @@ static inline void rtl_neq0(rtlreg_t* dest, const rtlreg_t* src1) {
 
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
-  TODO();
+  assert(width == 1 || width == 2 || width == 4);
+  bool has_sign = false;
+  if(width == 1){
+    has_sign = (*src1 & 0x00000080);
+  } else if(width == 2) {
+    has_sign = (*src1 & 0x00008000);
+  } else if(width == 4) {
+    has_sign = (*src1 & 0x80000000);
+  }
+  if(has_sign)
+    rtl_li(dest, 1);
+  else
+    rtl_li(dest, 0);
 }
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  TODO();
+  assert(width == 1 || width == 2 || width == 4);
+  if(width == 1){
+    bool not_zero = (*result & 0x000000FF);
+    if(not_zero) {
+      rtl_li(&t1, 0);
+      rtl_set_ZF(&t1);
+    }
+    else{
+      rtl_li(&t1, 1);
+      rtl_set_ZF(&t1);
+    }
+  } else if(width == 2) {
+    bool not_zero = (*result & 0x0000FFFF);
+    if(not_zero) {
+      rtl_li(&t1, 0);
+      rtl_set_ZF(&t1);
+    }
+    else{
+      rtl_li(&t1, 1);
+      rtl_set_ZF(&t1);
+    }
+  } else if(width == 4) {
+    bool not_zero = (*result & 0xFFFFFFFF);
+    if(not_zero) {
+      rtl_li(&t1, 0);
+      rtl_set_ZF(&t1);
+    }
+    else{
+      rtl_li(&t1, 1);
+      rtl_set_ZF(&t1);
+    }
+  }
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  TODO();
+  assert(width == 1 || width == 2 || width == 4);
+  if(width == 1){
+    bool has_sign = (*result & 0x00000080);
+    if(has_sign) {
+      rtl_li(&t1, 1);
+      rtl_set_SF(&t1);
+    }
+    else{
+      rtl_li(&t1, 0);
+      rtl_set_SF(&t1);
+    }
+  } else if(width == 2) {
+    bool has_sign = (*result & 0x00008000);
+    if(has_sign) {
+      rtl_li(&t1, 1);
+      rtl_set_SF(&t1);
+    }
+    else{
+      rtl_li(&t1, 0);
+      rtl_set_SF(&t1);
+    }
+  } else if(width == 4) {
+    bool has_sign = (*result & 0x80000000);
+    if(has_sign) {
+      rtl_li(&t1, 1);
+      rtl_set_SF(&t1);
+    }
+    else{
+      rtl_li(&t1, 0);
+      rtl_set_SF(&t1);
+    }
+  }
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {

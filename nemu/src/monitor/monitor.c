@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 #define ENTRY_START 0x100000
-
+#define EFLAG_INIT 0x00000002
 void init_difftest();
 void init_regex();
 void init_wp_pool();
@@ -82,7 +82,7 @@ static inline void load_img() {
 static inline void restart() {
   /* Set the initial instruction pointer. */
   cpu.eip = ENTRY_START;
-
+  cpu.eflags = EFLAG_INIT;
 #ifdef DIFF_TEST
   init_qemu_reg();
 #endif

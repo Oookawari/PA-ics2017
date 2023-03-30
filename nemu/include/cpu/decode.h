@@ -16,7 +16,7 @@ typedef struct {
     uint32_t reg;
     rtlreg_t addr;
     uint32_t imm;
-    int32_t simm;
+    int32_t simm;//有符号imm
   };
   rtlreg_t val;
   char str[OP_STR_SIZE];

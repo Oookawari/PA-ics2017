@@ -6,7 +6,6 @@ DecodeInfo decoding;
 rtlreg_t t0, t1, t2, t3;
 const rtlreg_t tzero = 0;
 rtlreg_t rtl_temp;
-
 #define make_DopHelper(name) void concat(decode_op_, name) (vaddr_t *eip, Operand *op, bool load_val)
 
 /* Refer to Appendix A in i386 manual for the explanations of these abbreviations */
@@ -32,16 +31,25 @@ static inline make_DopHelper(SI) {
   assert(op->width == 1 || op->width == 4);
 
   op->type = OP_TYPE_IMM;
-
+  
+  
   /* TODO: Use instr_fetch() to read `op->width' bytes of memory
    * pointed by `eip'. Interpret the result as a signed immediate,
    * and assign it to op->simm.
    *
    op->simm = ???
    */
-  TODO();
-
-  rtl_li(&op->val, op->simm);
+  if(op->width == 4) {
+    int32_t read_res = instr_fetch(eip, op->width);
+    op->simm = read_res;
+    rtl_li(&op->val, op->simm);
+  }
+  if(op->width == 1) {
+    int8_t read_res = instr_fetch(eip, op->width);
+    op->simm = read_res;
+    rtl_li(&t0, op->simm);
+    rtl_sext(&op->val, &t0, 1);
+  }
 
 #ifdef DEBUG
   snprintf(op->str, OP_STR_SIZE, "$0x%x", op->simm);
