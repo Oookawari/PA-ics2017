@@ -141,6 +141,7 @@ int init_monitor(int argc, char *argv[]) {
   printf("aft init_device()\n");
   /* Display welcome message. */
   welcome();
-
+  
+  printf("aft welcome()\n");
   return is_batch_mode;
 }
