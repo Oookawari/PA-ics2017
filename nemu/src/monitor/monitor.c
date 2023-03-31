@@ -123,19 +123,22 @@ int init_monitor(int argc, char *argv[]) {
 
   /* Load the image to memory. */
   load_img();
-
+  
+  printf("aft load_img()");
   /* Initialize this virtual computer system. */
   restart();
-
+  printf("aft restart()");
   /* Compile the regular expressions. */
   init_regex();
 
+  printf("aft init_regex()");
   /* Initialize the watchpoint pool. */
   init_wp_pool();
-
+  
+  printf("aft init_wp_pool()");
   /* Initialize devices. */
   init_device();
-
+  printf("aft init_device()");
   /* Display welcome message. */
   welcome();
 
