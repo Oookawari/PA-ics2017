@@ -120,25 +120,25 @@ int init_monitor(int argc, char *argv[]) {
   /* Fork a child process to perform differential testing. */
   init_difftest();
 #endif
-
+   printf("aft reg_test()\n");
   /* Load the image to memory. */
   load_img();
   
-  printf("aft load_img()");
+  printf("aft load_img()\n");
   /* Initialize this virtual computer system. */
   restart();
-  printf("aft restart()");
+  printf("aft restart()\n");
   /* Compile the regular expressions. */
   init_regex();
 
-  printf("aft init_regex()");
+  printf("aft init_regex()\n");
   /* Initialize the watchpoint pool. */
   init_wp_pool();
   
-  printf("aft init_wp_pool()");
+  printf("aft init_wp_pool()\n");
   /* Initialize devices. */
   init_device();
-  printf("aft init_device()");
+  printf("aft init_device()\n");
   /* Display welcome message. */
   welcome();
 
