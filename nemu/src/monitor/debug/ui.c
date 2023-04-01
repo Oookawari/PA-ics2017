@@ -186,7 +186,7 @@ static int cmd_x(char *args) {
     content4 = vaddr_read(expr_value + 3, 1);
     printf("address %08x:\t%02x\t%02x\t%02x\t%02x\n",expr_value, content1, content2, content3, content4);
     content4 = vaddr_read(expr_value + 0, 4);
-    printf("address %08x:\t%08x\n",expr_value, content4);
+    //printf("address %08x:\t%08x\n",expr_value, content4);
     expr_value += 4;
   }
   printf("-----------------------\n");
