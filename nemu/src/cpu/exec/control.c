@@ -26,6 +26,7 @@ make_EHelper(jmp_rm) {
 make_EHelper(call) {
   //装载eip至temp
   rtl_li(&t0, cpu.eip);
+  //rtl_li(&t0, decoding.seq_eip);
   rtl_push(&t0);
   // the target address is calculated at the decode stage
   if(decoding.dest.width == 2) {
@@ -42,8 +43,18 @@ make_EHelper(call) {
 }
 
 make_EHelper(ret) {
-  TODO();
-
+  rtl_pop(&t0);
+  if(decoding.dest.width == 2) {
+    //rtl_push(cpu.eip);
+    decoding.is_jmp = 1;
+    decoding.jmp_eip = t0;
+    decoding.jmp_eip = decoding.jmp_eip & 0x0000FFFF;
+  }
+  else if(decoding.dest.width == 4) {
+    //rtl_push(&cpu.eip);
+    decoding.is_jmp = 1;
+    decoding.jmp_eip = t0;
+  }
   print_asm("ret");
 }
 
