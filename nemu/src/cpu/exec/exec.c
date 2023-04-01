@@ -25,8 +25,6 @@ static inline void idex(vaddr_t *eip, opcode_entry *e) {
   /* eip is pointing to the byte next to opcode */
   if (e->decode)
     e->decode(eip);
-    
-  printf("1111111\n");
   e->execute(eip);
 }
 
@@ -43,7 +41,7 @@ static make_EHelper(name) { \
 
 /* 0x80, 0x81, 0x83 */
 make_group(gp1,
-    EMPTY, EMPTY, EMPTY, EMPTY,
+    EMPTY, EMPTY, EX(adc), EMPTY,
     EMPTY, EX(sub), EMPTY, EMPTY)
 
   /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
@@ -78,7 +76,7 @@ opcode_entry opcode_table [512] = {
   /* 0x04 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x08 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x0c */	EMPTY, EMPTY, EMPTY, EX(2byte_esc),
-  /* 0x10 */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x10 */	IDEXW(G2E, adc, 1), IDEX(G2E, adc), IDEXW(E2G, adc, 1), IDEX(E2G, adc),
   /* 0x14 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x18 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x1c */	EMPTY, EMPTY, EMPTY, EMPTY,
@@ -186,9 +184,9 @@ opcode_entry opcode_table [512] = {
   /* 0xa8 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xac */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xb0 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xb4 */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0xb4 */	EMPTY, EMPTY, IDEXW(E2G, movzx, 1), IDEXW(E2G, movzx, 4),
   /* 0xb8 */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0xbc */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0xbc */	EMPTY, EMPTY, IDEXW(E2G, movsx, 1), IDEXW(E2G, movsx, 4),
   /* 0xc0 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xc4 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0xc8 */	EMPTY, EMPTY, EMPTY, EMPTY,
