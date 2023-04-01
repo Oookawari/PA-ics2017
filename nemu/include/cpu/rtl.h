@@ -4,12 +4,7 @@
 #include "nemu.h"
 
 extern rtlreg_t t0, t1, t2, t3;
-extern rtlreg_t rtl_temp;
 extern const rtlreg_t tzero;
-
-static inline void rtl_li2temp(uint32_t imm) {
-  rtl_temp = imm;
-}
 /* RTL basic instructions */
 
 static inline void rtl_li(rtlreg_t* dest, uint32_t imm) {
@@ -117,7 +112,7 @@ static inline void rtl_sr(int r, int width, const rtlreg_t* src1) {
 
 #define make_rtl_setget_eflags(f) \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
-    if(src) (&cpu)->f = 1; \
+    if(*src) (&cpu)->f = 1; \
     else (&cpu)->f = 0;\
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
