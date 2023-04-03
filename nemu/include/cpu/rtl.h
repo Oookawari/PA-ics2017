@@ -272,6 +272,7 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   }
 }
 
+/*WARNING 调用该函数会覆盖t1！！！！！请注意*/
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
   rtl_update_ZF(result, width);
   rtl_update_SF(result, width);
