@@ -218,8 +218,7 @@ make_DHelper(SI2E) {
   if (id_dest->width == 2) {
     id_src->val &= 0xffff;
   }
-  
-  printf("now decoding ext_opcode is %d \n", decoding.ext_opcode);
+  //printf("now decoding ext_opcode is %d \n", decoding.ext_opcode);
 }
 
 make_DHelper(SI_E2G) {
