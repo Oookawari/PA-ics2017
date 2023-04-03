@@ -95,5 +95,5 @@ make_EHelper(xchg) {
     operand_write(id_dest, &t1);
     reg_l(0) = t2;
   }
-  print_asm_template2(lea);
+  //print_asm_template2(xchg);
 }
