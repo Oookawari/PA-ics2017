@@ -29,3 +29,7 @@ make_EHelper(test);
 
 make_EHelper(cmp);
 make_EHelper(jcc);
+
+make_EHelper(or);
+make_EHelper(xor);
+make_EHelper(cmp);
