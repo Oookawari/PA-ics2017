@@ -83,17 +83,20 @@ make_EHelper(lea) {
 }
 
 make_EHelper(xchg) {
+  id_src->type = OP_TYPE_REG;
   if (decoding.is_operand_size_16) {
+    id_src->reg = R_AX;
     rtl_mv(&t2, &id_dest->val);
     rtl_li(&t1, reg_w(0));
     operand_write(id_dest, &t1);
     reg_w(0) = t2;
   }
   else {
+    id_src->reg = R_EAX;
     rtl_mv(&t2, &id_dest->val);
     rtl_li(&t1, reg_l(0));
     operand_write(id_dest, &t1);
     reg_l(0) = t2;
   }
-  //print_asm_template2(xchg);
+  print_asm_template2(xchg);
 }
