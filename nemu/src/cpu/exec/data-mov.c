@@ -81,3 +81,19 @@ make_EHelper(lea) {
   operand_write(id_dest, &t2);
   print_asm_template2(lea);
 }
+
+make_EHelper(xchg) {
+  if (decoding.is_operand_size_16) {
+    rtl_mv(&t2, &id_dest->val);
+    rtl_li(&t1, reg_w(0));
+    operand_write(id_dest, &t1);
+    reg_w(0) = t2;
+  }
+  else {
+    rtl_mv(&t2, &id_dest->val);
+    rtl_li(&t1, reg_l(0));
+    operand_write(id_dest, &t1);
+    reg_l(0) = t2;
+  }
+  print_asm_template2(lea);
+}
