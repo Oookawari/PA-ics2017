@@ -264,8 +264,9 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
     }
   } else if(width == 4) {
     printf("result width = 4, %08x\n", *result);
-    bool has_sign = (*result & 0x80000000);
-    printf("exptres, %d\n", (*result & 0x80000000));
+    unsigned int temp = (*result & 0x80000000);
+    //bool has_sign = (*result & 0x80000000);
+    bool has_sign = (temp == 0 ? 0 : 1);
     printf("has_sign, %d\n", has_sign);
     if(has_sign) {
       printf("SF_SET!!!!! width = 4\n");
