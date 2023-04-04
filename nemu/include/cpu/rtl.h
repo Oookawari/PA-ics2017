@@ -224,13 +224,13 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
       rtl_set_ZF(&t1);
     }
   } else if(width == 4) {
-    printf("result width = 4, %08x\n", *result);
+    //printf("result width = 4, %08x\n", *result);
     unsigned int temp = (*result & 0xFFFFFFFF);
     //bool not_zero = (*result & 0xFFFFFFFF);
     bool not_zero = (temp == 0 ? 0 : 1);
-    printf("not_zero, %d\n", not_zero);
+    //printf("not_zero, %d\n", not_zero);
     if(not_zero) {
-      printf("ZF_UNSET!!!!! width = 4\n");
+      //printf("ZF_UNSET!!!!! width = 4\n");
       rtl_li(&t1, 0);
       rtl_set_ZF(&t1);
     }
