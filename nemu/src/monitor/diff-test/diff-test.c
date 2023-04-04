@@ -156,6 +156,7 @@ void difftest_step(uint32_t eip) {
     if(cpu.gpr[i]._32 != r.array[i]) {
       diff = true;
       printf("Diff testing detected: %s\n", reg_groups[i]);
+      printf("At: %08x\n", cpu.eip);
       printf("nemu value: %08x\n", cpu.gpr[i]._32);
       printf("qemu value: %08x\n", r.array[i]);
       break;
@@ -165,6 +166,7 @@ void difftest_step(uint32_t eip) {
   if(cpu.eip != r.eip) {
       diff = true;
       printf("Diff testing detected: eip\n");
+      printf("At: %08x\n", cpu.eip);
       printf("nemu value: %08x\n", cpu.eip);
       printf("qemu value: %08x\n", r.eip);
   }
@@ -181,6 +183,7 @@ void difftest_step(uint32_t eip) {
     if(nemu_bits != qemu_bits) {
       diff = true;
       printf("Diff testing detected: eflags\n");
+      printf("At: %08x\n", cpu.eip);
       printf("nemu : %s = %d\n", eflags_care_str[i], nemu_bits);
       printf("qemu : %s = %d\n", eflags_care_str[i], qemu_bits);
     }
