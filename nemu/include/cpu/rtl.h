@@ -192,7 +192,9 @@ static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   } else if(width == 2) {
     has_sign = (*src1 & 0x00008000);
   } else if(width == 4) {
-    has_sign = (*src1 & 0x80000000);
+    unsigned int temp = (*src1 & 0x80000000);
+    has_sign = (temp == 0 ? 0 : 1);
+    //has_sign = (*src1 & 0x80000000);
   }
   if(has_sign)
     rtl_li(dest, 1);
