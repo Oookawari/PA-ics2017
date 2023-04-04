@@ -242,6 +242,7 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   if(width == 1){
     bool has_sign = (*result & 0x00000080);
     if(has_sign) {
+      printf("SF_SET!!!!! width = 1");
       rtl_li(&t1, 1);
       rtl_set_SF(&t1);
     }
@@ -250,6 +251,7 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
       rtl_set_SF(&t1);
     }
   } else if(width == 2) {
+      printf("SF_SET!!!!! width = 2");
     bool has_sign = (*result & 0x00008000);
     if(has_sign) {
       rtl_li(&t1, 1);
@@ -260,6 +262,7 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
       rtl_set_SF(&t1);
     }
   } else if(width == 4) {
+      printf("SF_SET!!!!! width = 4");
     bool has_sign = (*result & 0x80000000);
     if(has_sign) {
       rtl_li(&t1, 1);
