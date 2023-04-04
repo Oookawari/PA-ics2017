@@ -152,7 +152,7 @@ void difftest_step(uint32_t eip) {
   //TODO();
   char reg_groups[8][4] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
   for(int i = 0; i < 8; i++) {
-    printf("nemu: %s %d\tqemu: %s %d\n",reg_groups[i], cpu.gpr[i]._32, reg_groups[i], r.array[i]);
+    //printf("nemu: %s %d\tqemu: %s %d\n",reg_groups[i], cpu.gpr[i]._32, reg_groups[i], r.array[i]);
     if(cpu.gpr[i]._32 != r.array[i]) {
       diff = true;
       printf("Diff testing detected: %s\n", reg_groups[i]);
@@ -175,9 +175,9 @@ void difftest_step(uint32_t eip) {
   for(int i = 0; i < 5; i++){
     int bit_ss = 0x1;
     bit_ss = bit_ss << eflags_care_bits[i];
-    bool nemu_bits = bit_ss & cpu.eflags;
-    bool qemu_bits = bit_ss & r.eflags;
-    //printf("nemu: %s %d\tqemu: %s %d\n",eflags_care_str[i], nemu_bits, eflags_care_str[i], qemu_bits);
+    bool nemu_bits = (bit_ss & cpu.eflags) ? 1 : 0;
+    bool qemu_bits = (bit_ss & r.eflags) ? 1 : 0;
+    printf("nemu: %s %d\tqemu: %s %d\n",eflags_care_str[i], nemu_bits, eflags_care_str[i], qemu_bits);
     if(nemu_bits != qemu_bits) {
       diff = true;
       printf("Diff testing detected: eflags\n");
