@@ -224,8 +224,11 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
       rtl_set_ZF(&t1);
     }
   } else if(width == 4) {
+    printf("result width = 4, %08x\n", *result);
     bool not_zero = (*result & 0xFFFFFFFF);
+    printf("not_zero, %d\n", not_zero);
     if(not_zero) {
+      printf("ZF_UNSET!!!!! width = 4\n");
       rtl_li(&t1, 0);
       rtl_set_ZF(&t1);
     }
@@ -242,7 +245,6 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   if(width == 1){
     bool has_sign = (*result & 0x00000080);
     if(has_sign) {
-      printf("SF_SET!!!!! width = 1\n");
       rtl_li(&t1, 1);
       rtl_set_SF(&t1);
     }
@@ -254,7 +256,6 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
       
     bool has_sign = (*result & 0x00008000);
     if(has_sign) {
-      printf("SF_SET!!!!! width = 2\n");
       rtl_li(&t1, 1);
       rtl_set_SF(&t1);
     }
@@ -263,13 +264,10 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
       rtl_set_SF(&t1);
     }
   } else if(width == 4) {
-    printf("result width = 4, %08x\n", *result);
     unsigned int temp = (*result & 0x80000000);
     //bool has_sign = (*result & 0x80000000);
     bool has_sign = (temp == 0 ? 0 : 1);
-    printf("has_sign, %d\n", has_sign);
     if(has_sign) {
-      printf("SF_SET!!!!! width = 4\n");
       rtl_li(&t1, 1);
       rtl_set_SF(&t1);
     }
