@@ -227,7 +227,7 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
     printf("result width = 4, %08x\n", *result);
     unsigned int temp = (*result & 0xFFFFFFFF);
     //bool not_zero = (*result & 0xFFFFFFFF);
-    bool not_zero = (temp == 0 ? 1 : 0);
+    bool not_zero = (temp == 0 ? 0 : 1);
     printf("not_zero, %d\n", not_zero);
     if(not_zero) {
       printf("ZF_UNSET!!!!! width = 4\n");
