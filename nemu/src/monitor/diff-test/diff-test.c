@@ -167,12 +167,21 @@ void difftest_step(uint32_t eip) {
       printf("nemu value: %08x\n", cpu.eip);
       printf("qemu value: %08x\n", r.eip);
   }
-
-  if(cpu.eflags != r.eflags) {
+  
+  /*EFLAGS*/
+  int eflags_care_bits[5] = {0, 6, 7, 9, 11};
+  char eflags_care_str[5][4] = {"CF", "ZF", "SF", "IF", "OF"};
+  for(int i = 0; i < 5; i++){
+    int bit_ss = 0x1;
+    bit_ss = bit_ss << eflags_care_bits[i];
+    bool nemu_bits = bit_ss & cpu.eflags;
+    bool qemu_bits = bit_ss & r.eflags;
+    if(nemu_bits != qemu_bits) {
       diff = true;
       printf("Diff testing detected: eflags\n");
-      printf("nemu value: %08x\n", cpu.eflags);
-      printf("qemu value: %08x\n", r.eflags);
+      printf("nemu : %s = %d\n", eflags_care_str[i], nemu_bits);
+      printf("qemu : %s = %d\n", eflags_care_str[i], qemu_bits);
+    }
   }
   if (diff) {
     nemu_state = NEMU_END;
