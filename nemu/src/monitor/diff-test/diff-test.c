@@ -153,7 +153,7 @@ void difftest_step(uint32_t eip) {
   char reg_groups[8][4] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
   for(int i = 0; i < 8; i++) {
     //printf("nemu: %s %d\tqemu: %s %d\n",reg_groups[i], cpu.gpr[i]._32, reg_groups[i], r.array[i]);
-    if(cpu.gpr[i]._32 != r.array[i + 1]) {
+    if(cpu.gpr[i]._32 != r.array[i]) {
       diff = true;
       printf("Diff testing detected: %s\n", reg_groups[i]);
       printf("Next eip: %08x\n", cpu.eip);
