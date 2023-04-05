@@ -35,3 +35,4 @@ make_EHelper(xor);
 make_EHelper(cmp);
 
 make_EHelper(sar);
+make_EHelper(shl);
