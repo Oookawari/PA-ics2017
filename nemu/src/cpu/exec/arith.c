@@ -91,26 +91,26 @@ make_EHelper(neg) {
 }
 
 make_EHelper(adc) {
-  printf("--------------------------------\n");
-  printf("eip: \t\t%08x\n",cpu.eip);
-  printf("adc src_num: \t%08x\n", id_src->val);
-  printf("adc dest_num: \t%08x\n", id_dest->val);
+  //printf("--------------------------------\n");
+  //printf("eip: \t\t%08x\n",cpu.eip);
+  //printf("adc src_num: \t%08x\n", id_src->val);
+  //printf("adc dest_num: \t%08x\n", id_dest->val);
   rtl_add(&t2, &id_dest->val, &id_src->val);
-  printf("after add: \t%08x\n", t2);
+  //printf("after add: \t%08x\n", t2);
   rtl_sltu(&t3, &t2, &id_dest->val);
-  printf("after sltu: \t%08x\n", t3);
+  //printf("after sltu: \t%08x\n", t3);
   rtl_get_CF(&t1);
-  printf("adc CF: \t%08x\n", t1);
+  //printf("adc CF: \t%08x\n", t1);
   rtl_add(&t2, &t2, &t1);
-  printf("after adc: \t%08x\n", t2);
+  //printf("after adc: \t%08x\n", t2);
   operand_write(id_dest, &t2);
 
   rtl_update_ZFSF(&t2, id_dest->width);
 
   rtl_sltu(&t0, &t2, &id_dest->val);
-  printf("after sltu2: \t%08x\n", t0);
+  //printf("after sltu2: \t%08x\n", t0);
   rtl_or(&t0, &t3, &t0);
-  printf("after or: \t%08x\n", t0);
+  //printf("after or: \t%08x\n", t0);
   rtl_set_CF(&t0);
 
   rtl_xor(&t0, &id_dest->val, &id_src->val);

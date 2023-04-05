@@ -158,7 +158,7 @@ void difftest_step(uint32_t eip) {
       printf("Diff testing detected: %s\n", reg_groups[i]);
       printf("Next eip: %08x\n", cpu.eip);
       printf("nemu value: %08x\n", cpu.gpr[i]._32);
-      printf("qemu value: %08x\n", r.array[i]);
+      printf("qemu value: %08x\n", r.array[i+1]);
       break;
     }
   }
