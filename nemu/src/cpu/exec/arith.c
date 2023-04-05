@@ -54,10 +54,7 @@ make_EHelper(cmp) {
   //operand_write(id_dest, &t2);
 
   rtl_update_ZFSF(&t2, id_dest->width);
-  printf("&id_dest->val : %08x\n", id_dest->val);
-  printf("&t2 : %08x\n", t2);
   rtl_sltu(&t0, &id_dest->val, &t2);
-  printf("&t0 : %08x\n", t0);
   //rtl_or(&t0, &t3, &t0);
   rtl_set_CF(&t0);
   printf("CF : %d\n", cpu.CF);
@@ -73,6 +70,7 @@ make_EHelper(cmp) {
   rtl_set_OF(&t0);
   printf("CF2 : %d\n", cpu.CF);
   print_asm_template2(cmp);
+  printf("CF3 : %d\n", cpu.CF);
 }
 
 make_EHelper(inc) {
