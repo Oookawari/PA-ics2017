@@ -1,5 +1,7 @@
 #include "cpu/exec.h"
 
+extern bool eflags_ignore;
+
 make_EHelper(mov);
 
 make_EHelper(operand_size);

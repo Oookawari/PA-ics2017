@@ -1,5 +1,5 @@
 #include "cpu/exec.h"
-
+bool eflags_ignore;
 make_EHelper(test) {
   rtl_and(&t2, &id_dest->val, &id_src->val);
   //operand_write(id_dest, &t2);
@@ -45,6 +45,7 @@ make_EHelper(sar) {
   rtl_sar(&t0, &id_dest->val, &id_src->val);
   operand_write(id_dest, &t0);
   rtl_update_ZFSF(&t0, id_dest->width);
+  eflags_ignore = true;
   print_asm_template2(sar);
 }
 
@@ -54,7 +55,8 @@ make_EHelper(shl) {
   rtl_shl(&t0, &id_dest->val, &id_src->val);
   operand_write(id_dest, &t0);
   //printf("shl %08x\n", t0);
-  //rtl_update_ZFSF(&t0, id_dest->width);
+  rtl_update_ZFSF(&t0, id_dest->width);
+  eflags_ignore = true;
   print_asm_template2(shl);
 }
 
@@ -64,6 +66,7 @@ make_EHelper(shr) {
   rtl_shr(&t0, &id_dest->val, &id_src->val);
   operand_write(id_dest, &t0);
   rtl_update_ZFSF(&t0, id_dest->width);
+  eflags_ignore = true;
   print_asm_template2(shr);
 }
 

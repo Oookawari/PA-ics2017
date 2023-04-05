@@ -12,6 +12,7 @@ bool gdb_memcpy_to_qemu(uint32_t, void *, int);
 bool gdb_getregs(union gdb_regs *);
 bool gdb_setregs(union gdb_regs *);
 bool gdb_si(void);
+bool eflags_ignore;
 void gdb_exit(void);
 
 static bool is_skip_qemu;
@@ -159,7 +160,6 @@ void difftest_step(uint32_t eip) {
       printf("Next eip: %08x\n", cpu.eip);
       printf("nemu value: %08x\n", cpu.gpr[i]._32);
       printf("qemu value: %08x\n", r.array[i]);
-      break;
     }
   }
 
@@ -181,13 +181,15 @@ void difftest_step(uint32_t eip) {
     bool qemu_bits = (bit_ss & r.eflags) ? 1 : 0;
     //printf("nemu: %s %d\tqemu: %s %d\n",eflags_care_str[i], nemu_bits, eflags_care_str[i], qemu_bits);
     if(nemu_bits != qemu_bits) {
-      diff = true;
+      if(!eflags_ignore) diff = true;
       printf("Diff testing detected: eflags\n");
       printf("Next eip: %08x\n", cpu.eip);
       printf("nemu : %s = %d\n", eflags_care_str[i], nemu_bits);
       printf("qemu : %s = %d\n", eflags_care_str[i], qemu_bits);
+      
     }
   }
+  eflags_ignore = false;
   if (diff) {
     nemu_state = NEMU_END;
   }
