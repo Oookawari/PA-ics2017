@@ -91,6 +91,8 @@ make_EHelper(neg) {
 }
 
 make_EHelper(adc) {
+  printf("adc src_num: %08x\n", id_src->val);
+  printf("adc dest_num: %08x\n", id_dest->val);
   rtl_add(&t2, &id_dest->val, &id_src->val);
   rtl_sltu(&t3, &t2, &id_dest->val);
   rtl_get_CF(&t1);
