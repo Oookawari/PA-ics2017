@@ -91,6 +91,7 @@ make_EHelper(neg) {
 }
 
 make_EHelper(adc) {
+  printf("eip: %d\n",cpu.eip);
   printf("adc src_num: %08x\n", id_src->val);
   printf("adc dest_num: %08x\n", id_dest->val);
   rtl_add(&t2, &id_dest->val, &id_src->val);
