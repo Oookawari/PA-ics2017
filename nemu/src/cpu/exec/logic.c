@@ -50,7 +50,8 @@ make_EHelper(sar) {
 
 make_EHelper(shl) {
   // unnecessary to update CF and OF in NEMU
-  rtl_shl(&t0, &id_dest->val, &id_src->val);
+  //rtl_shl(&t0, &id_dest->val, &id_src->val);
+  rtl_li(&t0, 0x1234);
   operand_write(id_dest, &t0);
   printf("shl %08x\n", t0);
   rtl_update_ZFSF(&t0, id_dest->width);
