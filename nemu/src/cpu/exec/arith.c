@@ -60,7 +60,7 @@ make_EHelper(cmp) {
   printf("&t0 : %08x\n", t0);
   //rtl_or(&t0, &t3, &t0);
   rtl_set_CF(&t0);
-
+  printf("CF : %d\n", cpu.CF);
   rtl_xor(&t0, &id_dest->val, &id_src->val);
   //t0的符号位：源操作数与操作数符号相同时，t0符号位为0，否则为1
   rtl_xor(&t1, &id_dest->val, &t2);
