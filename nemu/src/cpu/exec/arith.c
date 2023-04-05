@@ -230,7 +230,8 @@ make_EHelper(imul1) {
 make_EHelper(imul2) {
   rtl_sext(&id_src->val, &id_src->val, id_src->width);
   rtl_sext(&id_dest->val, &id_dest->val, id_dest->width);
-
+  printf("&id_dest->val %d\n", id_dest->val);
+  printf("&id_src->val %d\n", id_src->val);
   rtl_imul(&t0, &t1, &id_dest->val, &id_src->val);
   operand_write(id_dest, &t1);
 
