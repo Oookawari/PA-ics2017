@@ -96,15 +96,16 @@ make_EHelper(inc) {
 make_EHelper(dec) {
   rtl_li(&t0, 1);
   //rtl_sub(id_dest, id_dest, id_src);
-  printf("id_dest->val : %d\n", id_dest->val);
   rtl_sub(&t2, &id_dest->val, &t0);
   //rtl_sltu(&t3, &id_dest->val, &t2);
 
   operand_write(id_dest, &t2);
 
   rtl_update_ZFSF(&t2, id_dest->width);
-
+  printf("id_dest->val : %d\n", id_dest->val);
+  printf("t2 : %d\n", t2);
   rtl_sltu(&t0, &id_dest->val, &t2);
+  printf("sltu : %d\n", t0);
   //rtl_or(&t0, &t3, &t0);
   rtl_set_CF(&t0);
 
