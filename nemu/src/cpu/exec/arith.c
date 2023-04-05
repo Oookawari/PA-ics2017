@@ -57,6 +57,7 @@ make_EHelper(cmp) {
   printf("&id_dest->val : %08x\n", id_dest->val);
   printf("&t2 : %08x\n", t2);
   rtl_sltu(&t0, &id_dest->val, &t2);
+  printf("&t0 : %08x\n", t0);
   //rtl_or(&t0, &t3, &t0);
   rtl_set_CF(&t0);
 
