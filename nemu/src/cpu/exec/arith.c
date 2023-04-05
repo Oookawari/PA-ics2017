@@ -95,10 +95,12 @@ make_EHelper(adc) {
   printf("adc src_num: %08x\n", id_src->val);
   printf("adc dest_num: %08x\n", id_dest->val);
   rtl_add(&t2, &id_dest->val, &id_src->val);
+  printf("t2: %08x\n", t2);
   rtl_sltu(&t3, &t2, &id_dest->val);
   rtl_get_CF(&t1);
   printf("adc CF: %08x\n", t1);
   rtl_add(&t2, &t2, &t1);
+  printf("t2: %08x\n", t2);
   operand_write(id_dest, &t2);
 
   rtl_update_ZFSF(&t2, id_dest->width);
