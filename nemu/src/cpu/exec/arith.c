@@ -71,6 +71,7 @@ make_EHelper(cmp) {
   rtl_msb(&t0, &t0, id_dest->width);
   //取符号位
   rtl_set_OF(&t0);
+  printf("CF2 : %d\n", cpu.CF);
   print_asm_template2(cmp);
 }
 
