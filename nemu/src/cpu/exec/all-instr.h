@@ -35,6 +35,7 @@ make_EHelper(jcc);
 make_EHelper(or);
 make_EHelper(xor);
 make_EHelper(cmp);
+make_EHelper(not);
 
 make_EHelper(sar);
 make_EHelper(shl);
