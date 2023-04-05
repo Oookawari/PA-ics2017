@@ -191,6 +191,6 @@ void difftest_step(uint32_t eip) {
   }
   eflags_ignore = false;
   if (diff) {
-    nemu_state = NEMU_END;
+    //nemu_state = NEMU_END;
   }
 }
