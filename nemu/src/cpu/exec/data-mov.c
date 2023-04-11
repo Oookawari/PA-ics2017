@@ -1,7 +1,7 @@
 #include "cpu/exec.h"
 
 make_EHelper(mov) {
-  printf("mov type: %d", id_dest->type);
+  printf("mov type: %d\n", id_dest->type);
   operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
 }
