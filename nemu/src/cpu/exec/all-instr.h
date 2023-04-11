@@ -43,6 +43,7 @@ make_EHelper(shl);
 make_EHelper(dec);
 make_EHelper(inc);
 make_EHelper(jmp);
+make_EHelper(call_rm);
 make_EHelper(imul1);
 make_EHelper(imul2);
 make_EHelper(imul3);
