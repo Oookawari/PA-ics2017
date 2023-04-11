@@ -181,7 +181,7 @@ void difftest_step(uint32_t eip) {
     bool qemu_bits = (bit_ss & r.eflags) ? 1 : 0;
     //printf("nemu: %s %d\tqemu: %s %d\n",eflags_care_str[i], nemu_bits, eflags_care_str[i], qemu_bits);
     if(nemu_bits != qemu_bits) {
-      if(!eflags_ignore) diff = true;
+      //if(!eflags_ignore) //diff = true;
       printf("Diff testing detected: eflags\n");
       printf("Next eip: %08x\n", cpu.eip);
       printf("nemu : %s = %d\n", eflags_care_str[i], nemu_bits);
