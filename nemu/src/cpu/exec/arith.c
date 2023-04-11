@@ -229,12 +229,12 @@ make_EHelper(imul1) {
 // imul with two operands
 make_EHelper(imul2) {
   
-  printf("imult src bef: %08x\n", id_src->val);
-  printf("imult dest bef: %08x\n", id_dest->val);
+  //printf("imult src bef: %08x\n", id_src->val);
+  //printf("imult dest bef: %08x\n", id_dest->val);
   rtl_sext(&id_src->val, &id_src->val, id_src->width);
   rtl_sext(&id_dest->val, &id_dest->val, id_dest->width);
-  printf("imult src : %08x\n", id_src->val);
-  printf("imult dest : %08x\n", id_dest->val);
+  //printf("imult src : %08x\n", id_src->val);
+  //printf("imult dest : %08x\n", id_dest->val);
   rtl_imul(&t0, &t1, &id_dest->val, &id_src->val);
   operand_write(id_dest, &t1);
 
