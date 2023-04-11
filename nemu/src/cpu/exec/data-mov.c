@@ -7,6 +7,7 @@ make_EHelper(mov) {
 
 make_EHelper(push) {
   //rtl_push(&((*id_dest).val));
+  printf("id_dest_type %d", id_dest->type);
   if(id_dest->type == OP_TYPE_MEM) {
     rtl_push(&id_dest->addr);
   }
