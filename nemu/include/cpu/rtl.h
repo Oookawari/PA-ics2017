@@ -148,9 +148,9 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
     (*src1 & 0x00008000) ? (*dest = *dest | (0xFFFF8000)) : (*dest = *dest | (0x00000000)); 
   } else if(width == 4) {
 
-    *dest = *src1 & 0x7FFFFFFF;
-    unsigned int temp = (*src1 & 0x80000000);
-    (temp ) ? (*dest = *dest | (0x80000000)) : (*dest = *dest | (0x00000000)); 
+    *dest = *src1 & 0xFFFFFFFF;
+    //unsigned int temp = (*result & 0x80000000);
+    //(*src1 & 0x80000000) ? (*dest = *dest | (0x80000000)) : (*dest = *dest | (0x00000000)); 
   }
 }
 
