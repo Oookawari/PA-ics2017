@@ -1,9 +1,9 @@
 #include "cpu/exec.h"
 
 make_EHelper(mov) {
-  printf("mov type: %d\n", id_src->type);
-  printf("mov addr: %08x\n", id_src->addr);
-  printf("mov val: %08x\n", id_src->val);
+  //printf("mov type: %d\n", id_src->type);
+  //printf("mov addr: %08x\n", id_src->addr);
+  //printf("mov val: %08x\n", id_src->val);
   if(id_src->type == OP_TYPE_MEM) {
     rtl_lm(&t0, &id_src->val, id_src->width);
     operand_write(id_dest, &t0);
