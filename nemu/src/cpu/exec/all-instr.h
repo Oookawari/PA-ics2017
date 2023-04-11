@@ -55,3 +55,4 @@ make_EHelper(div);
 make_EHelper(idiv);
 make_EHelper(leave);
 make_EHelper(jmp_rm);
+make_EHelper(shr);
