@@ -4,7 +4,17 @@ make_EHelper(mov) {
   printf("mov type: %d\n", id_src->type);
   printf("mov addr: %08x\n", id_src->addr);
   printf("mov val: %08x\n", id_src->val);
-  operand_write(id_dest, &id_src->val);
+  if(id_src->type == OP_TYPE_MEM) {
+    rtl_lm(&t0, &id_src->val, id_src->width);
+    operand_write(id_dest, &t0);
+  }
+  else if(id_src->type == OP_TYPE_REG){
+    operand_write(id_dest, &id_src->val);
+  }
+  else if(id_src->type == OP_TYPE_IMM){
+    operand_write(id_dest, &id_src->val);
+  }
+  //operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
 }
 
