@@ -109,10 +109,10 @@ void read_ModR_M(vaddr_t *eip, Operand *rm, bool load_rm_val, Operand *reg, bool
   else {
     load_addr(eip, &m, rm);
     if (load_rm_val) {
-      printf("rm-val %08x\n", rm->val);
-      printf("rm-addr %08x\n", rm->addr);
+      //printf("rm-val %08x\n", rm->val);
+      //printf("rm-addr %08x\n", rm->addr);
       rtl_lm(&rm->val, &rm->addr, rm->width);
-      printf("rm-val aft %08x\n", rm->val);
+      //printf("rm-val aft %08x\n", rm->val);
     }
   }
 }
