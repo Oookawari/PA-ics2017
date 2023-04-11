@@ -39,8 +39,15 @@ make_EHelper(popa) {
 }
 
 make_EHelper(leave) {
-  TODO();
-
+  if (decoding.is_operand_size_16) {
+    rtl_mv(&cpu.esp, &cpu.ebp);
+    rtl_pop(&cpu.ebp);
+    /*未完全实现*/
+  }
+  else{
+    rtl_mv(&cpu.esp, &cpu.ebp);
+    rtl_pop(&cpu.ebp);
+  }
   print_asm("leave");
 }
 
