@@ -5,8 +5,7 @@ make_EHelper(mov) {
   //printf("mov addr: %08x\n", id_src->addr);
   //printf("mov val: %08x\n", id_src->val);
   if(id_src->type == OP_TYPE_MEM) {
-    rtl_lm(&t0, &id_src->val, id_src->width);
-    operand_write(id_dest, &t0);
+    operand_write(id_dest, &id_src->val);
   }
   else if(id_src->type == OP_TYPE_REG){
     operand_write(id_dest, &id_src->val);
