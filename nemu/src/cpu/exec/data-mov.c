@@ -11,7 +11,7 @@ make_EHelper(push) {
   printf("id_dest val %08x\n", id_dest->val);
   printf("id_dest addr %08x\n", id_dest->addr);
   if(id_dest->type == OP_TYPE_MEM) {
-    rtl_push(&id_dest->addr);
+    rtl_push(&id_dest->val);
   }
   else if(id_dest->type == OP_TYPE_REG){
     rtl_push(&id_dest->val);
