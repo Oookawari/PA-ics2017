@@ -2,6 +2,8 @@
 
 make_EHelper(mov) {
   printf("mov type: %d\n", id_src->type);
+  printf("mov addr: %d\n", id_src->addr);
+  printf("mov val: %d\n", id_src->val);
   operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
 }
