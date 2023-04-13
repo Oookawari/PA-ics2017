@@ -53,10 +53,11 @@ make_EHelper(cmp) {
   printf("dest%08x\n", id_dest->val);
   printf("src%08x\n", id_src->val);
   rtl_sub(&t2, &id_dest->val, &id_src->val);
-
+  printf("t2 :%08x\n", t2);
   //operand_write(id_dest, &t2);
 
   rtl_update_ZFSF(&t2, id_dest->width);
+  printf("zf: %08x\n", cpu.ZF);
   rtl_sltu(&t0, &id_dest->val, &t2);
   //rtl_or(&t0, &t3, &t0);
   rtl_set_CF(&t0);
@@ -70,6 +71,7 @@ make_EHelper(cmp) {
   rtl_msb(&t0, &t0, id_dest->width);
   //取符号位
   rtl_set_OF(&t0);
+
   print_asm_template2(cmp);
 }
 
