@@ -38,7 +38,7 @@ void _halt(int code) {
   asm volatile(".byte 0xd6" : :"a"(code));
 
   // should not reach here
-  while (1);
+  while (1) {;}//{printf("should not reach here");};
 }
 
 void _trm_init() {
