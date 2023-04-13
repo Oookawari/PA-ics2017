@@ -49,13 +49,13 @@ void send_key(uint8_t scancode, bool is_keydown) {
 void i8042_io_handler(ioaddr_t addr, int len, bool is_write) {
   if (!is_write) {
     if (addr == I8042_DATA_PORT) {
-      i8042_status_port_base[0] &= ~I8042_STATUS_HASKEY_MASK;
+      i8042_status_port_base[0] &= ~I8042_STATUS_HASKEY_MASK;//STATUS置零
     }
     else if (addr == I8042_STATUS_PORT) {
-      if ((i8042_status_port_base[0] & I8042_STATUS_HASKEY_MASK) == 0) {
+      if ((i8042_status_port_base[0] & I8042_STATUS_HASKEY_MASK) == 0) {//
         if (key_f != key_r) {
-          i8042_data_port_base[0] = key_queue[key_f];
-          i8042_status_port_base[0] |= I8042_STATUS_HASKEY_MASK;
+          i8042_data_port_base[0] = key_queue[key_f];//取出队列头元素
+          i8042_status_port_base[0] |= I8042_STATUS_HASKEY_MASK;//STATUS置1
           key_f = (key_f + 1) % KEY_QUEUE_LEN;
         }
       }

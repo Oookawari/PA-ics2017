@@ -1,6 +1,8 @@
 #include <am.h>
 #include <x86.h>
 
+#define I8042_DATA_PORT 0x60
+#define I8042_STATUS_PORT 0x64
 #define RTC_PORT 0x48   // Note that this is not standard
 //RTC(Real Time Clock),初始化时将会注册 0x48 处的端口作为 RTC 寄存器,CPU 可以通
 //过 I/O 指令访问这一寄存器,获得当前时间(单位是 ms)
@@ -36,5 +38,11 @@ void _draw_sync() {
 }
 
 int _read_key() {
+  if(!inl(I8042_STATUS_PORT))
+    return _KEY_NONE;
+  else if(inl(I8042_STATUS_PORT)) {
+    unsigned int key = inl(I8042_STATUS_PORT);
+    return key;
+  }
   return _KEY_NONE;
 }
