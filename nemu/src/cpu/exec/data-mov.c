@@ -1,15 +1,13 @@
 #include "cpu/exec.h"
 
 make_EHelper(mov) {
+  
   operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
 }
 
 make_EHelper(push) {
   //rtl_push(&((*id_dest).val));
-  //printf("id_dest_type %d\n", id_dest->type);
-  //printf("id_dest val %08x\n", id_dest->val);
-  //printf("id_dest addr %08x\n", id_dest->addr);
   if(id_dest->type == OP_TYPE_MEM) {
     rtl_push(&id_dest->val);
   }
@@ -17,10 +15,7 @@ make_EHelper(push) {
     rtl_push(&id_dest->val);
   }
   else if(id_dest->type == OP_TYPE_IMM){
-    
     rtl_push(&id_dest->val);
-    //rtl_li(&t0, id_dest->imm);
-    //rtl_push(&t0);
   }
   print_asm_template1(push);
 }
