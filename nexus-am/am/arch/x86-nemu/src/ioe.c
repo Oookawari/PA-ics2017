@@ -38,10 +38,10 @@ void _draw_sync() {
 }
 
 int _read_key() {
-  if(!inl(I8042_STATUS_PORT))
+  if(!inb(I8042_STATUS_PORT))
     return _KEY_NONE;
   else if(inl(I8042_STATUS_PORT)) {
-    unsigned int key = inl(I8042_STATUS_PORT);
+    unsigned long key = inl(I8042_DATA_PORT);
     return key;
   }
   return _KEY_NONE;
