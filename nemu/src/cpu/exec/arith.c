@@ -49,6 +49,9 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
+  printf("cmp:::\n");
+  printf("dest%08x\n", id_dest->val);
+  printf("src%08x\n", id_src->val);
   rtl_sub(&t2, &id_dest->val, &id_src->val);
 
   //operand_write(id_dest, &t2);
