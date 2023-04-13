@@ -88,6 +88,7 @@ make_EHelper(cwtl) {
     printf("R_AX   %08x\n", cpu.gpr[0]._16);
     rtl_lr_b(&t0, R_AX);
     rtl_sext(&t1, &t0, 2);
+    printf("R_EAX   %08x\n", t1);
     rtl_sr_w(R_EAX, &t1);
     printf("R_EAX   %08x\n", cpu.gpr[0]._32);
   }
