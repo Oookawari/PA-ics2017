@@ -218,8 +218,12 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
       rtl_set_ZF(&t1);
     }
   } else if(width == 2) {
-    printf("zf: result: %04x", *result);
+    printf("zf: result: %08x\n", *result);
+    unsigned int temp = (*result & 0xFFFFFFFF);
+    printf("zf: temp: %08x\n", temp);
     bool not_zero = (*result & 0x0000FFFF);
+    
+    printf("zf: not_zero: %08x\n", not_zero);
     if(not_zero) {
       rtl_li(&t1, 0);
       rtl_set_ZF(&t1);
