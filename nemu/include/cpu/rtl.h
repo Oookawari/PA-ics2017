@@ -141,11 +141,15 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   assert(width == 1 || width == 2 || width == 4);
   if(width == 1){
     *dest = *src1 & 0x0000007F;
-    (*src1 & 0x00000080) ? (*dest = *dest | (0xFFFFFF80)) : (*dest = *dest | (0x00000000)); 
+    unsigned int temp = (*src1 & 0x00000080);
+    (temp == 0 ? (*dest = *dest | (0x00000000)) : (*dest = *dest | (0xFFFFFF80)));
+    //(*src1 & 0x00000080) ? (*dest = *dest | (0xFFFFFF80)) : (*dest = *dest | (0x00000000)); 
   } else if(width == 2) {
     
     *dest = *src1 & 0x00007FFF;
-    (*src1 & 0x00008000) ? (*dest = *dest | (0xFFFF8000)) : (*dest = *dest | (0x00000000)); 
+    unsigned int temp = (*src1 & 0x00008000);
+    (temp == 0 ? (*dest = *dest | (0x00000000)) : (*dest = *dest | (0xFFFF8000)));
+    //(*src1 & 0x00008000) ? (*dest = *dest | (0xFFFF8000)) : (*dest = *dest | (0x00000000)); 
   } else if(width == 4) {
 
     *dest = *src1 & 0xFFFFFFFF;
