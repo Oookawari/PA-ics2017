@@ -208,7 +208,9 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   assert(width == 1 || width == 2 || width == 4);
   if(width == 1){
-    bool not_zero = (*result & 0x000000FF);
+    unsigned int temp = (*result & 0x000000FF);
+    bool not_zero = (temp == 0 ? 0 : 1);
+    //bool not_zero = (*result & 0x000000FF);
     if(not_zero) {
       rtl_li(&t1, 0);
       rtl_set_ZF(&t1);
@@ -219,10 +221,10 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
     }
   } else if(width == 2) {
     printf("zf: result: %08x\n", *result);
-    unsigned int temp = (*result & 0xFFFFFFFF);
-    printf("zf: temp: %08x\n", temp);
-    bool not_zero = (*result & 0x0000FFFF);
-    
+    unsigned int temp = (*result & 0x0000FFFF);
+    bool not_zero = (temp == 0 ? 0 : 1);
+    //printf("zf: temp: %08x\n", temp);
+    //bool not_zero = (*result & 0x0000FFFF);
     printf("zf: not_zero: %08x\n", not_zero);
     if(not_zero) {
       rtl_li(&t1, 0);
