@@ -77,20 +77,14 @@ make_EHelper(cltd) {
 
 make_EHelper(cwtl) {
   if (decoding.is_operand_size_16) {
-    
-    printf("R_AL   %08x\n", cpu.gpr[0]._8[0]);
     rtl_lr_b(&t0, R_AL);
     rtl_sext(&t1, &t0, 1);
     rtl_sr_w(R_AX, &t1);
-    printf("R_AX   %08x\n", cpu.gpr[0]._16);
   }
   else {
-    printf("R_AX   %08x\n", cpu.gpr[0]._16);
     rtl_lr_b(&t0, R_AX);
     rtl_sext(&t1, &t0, 2);
-    printf("R_EAX   %08x\n", t1);
-    rtl_sr_w(R_EAX, &t1);
-    printf("R_EAX   %08x\n", cpu.gpr[0]._32);
+    rtl_sr_l(R_EAX, &t1);
   }
 
   print_asm(decoding.is_operand_size_16 ? "cbtw" : "cwtl");
