@@ -8,9 +8,9 @@ make_EHelper(mov) {
 
 make_EHelper(push) {
   //rtl_push(&((*id_dest).val));
-  printf("id_dest->type %08x", id_dest->type);
-  printf("id_dest->imm %08x", id_dest->imm);
-  printf("id_dest->val %08x", id_dest->val);
+  printf("id_dest->type %08x\n", id_dest->type);
+  printf("id_dest->imm %08x\n", id_dest->imm);
+  printf("id_dest->val %08x\n", id_dest->val);
   if(id_dest->type == OP_TYPE_MEM) {
     rtl_push(&id_dest->val);
   }
