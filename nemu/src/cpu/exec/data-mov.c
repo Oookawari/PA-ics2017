@@ -7,20 +7,7 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  //rtl_push(&((*id_dest).val));
-  if(id_dest->type == OP_TYPE_MEM) {
-    rtl_push(&id_dest->val);
-  }
-  else if(id_dest->type == OP_TYPE_REG){
-    rtl_push(&id_dest->val);
-  }
-  else if(id_dest->type == OP_TYPE_IMM){
-    
-  printf("id_dest->type %08x\n", id_dest->type);
-  printf("id_dest->imm %08x\n", id_dest->imm);
-  printf("id_dest->val %08x\n", id_dest->val);
-    rtl_push(&id_dest->val);
-  }
+  rtl_push(&id_dest->val);
   print_asm_template1(push);
 }
 
