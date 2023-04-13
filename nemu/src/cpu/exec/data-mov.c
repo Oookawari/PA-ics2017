@@ -17,8 +17,9 @@ make_EHelper(push) {
     rtl_push(&id_dest->val);
   }
   else if(id_dest->type == OP_TYPE_IMM){
-    rtl_li(&t0, id_dest->imm);
-    rtl_push(&t0);
+    //rtl_li(&t0, id_dest->imm);
+    //rtl_push(&t0);
+    rtl_push(&id_dest->val);
   }
   print_asm_template1(push);
 }

@@ -270,8 +270,8 @@ static inline void rtl_update_SF(const rtlreg_t* result, int width) {
       rtl_set_SF(&t1);
     }
   } else if(width == 4) {
-    unsigned int temp = (*result & 0x80000000);
     //bool has_sign = (*result & 0x80000000);
+    unsigned int temp = (*result & 0x80000000);
     bool has_sign = (temp == 0 ? 0 : 1);
     if(has_sign) {
       rtl_li(&t1, 1);
