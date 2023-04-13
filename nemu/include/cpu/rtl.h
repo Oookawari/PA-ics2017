@@ -218,6 +218,7 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
       rtl_set_ZF(&t1);
     }
   } else if(width == 2) {
+    printf("zf: result: %04x", *result);
     bool not_zero = (*result & 0x0000FFFF);
     if(not_zero) {
       rtl_li(&t1, 0);
