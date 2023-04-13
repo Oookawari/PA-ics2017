@@ -42,7 +42,9 @@ make_EHelper(or) {
 
 make_EHelper(sar) {
   // unnecessary to update CF and OF in NEMU
+  printf("id_src %08x\n", id_src->val);
   rtl_sar(&t0, &id_dest->val, &id_src->val);
+  printf("id_dest %08x\n", t0);
   operand_write(id_dest, &t0);
   rtl_update_ZFSF(&t0, id_dest->width);
   eflags_ignore = true;
