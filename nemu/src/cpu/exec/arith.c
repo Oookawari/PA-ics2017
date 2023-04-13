@@ -137,10 +137,6 @@ make_EHelper(neg) {
 
   rtl_update_ZFSF(&t2, id_dest->width);
 
-  rtl_sltu(&t0, &id_dest->val, &t2);
-  //rtl_or(&t0, &t3, &t0);
-  rtl_set_CF(&t0);
-
   rtl_xor(&t0, &id_dest->val, &t3);
   //t0的符号位：源操作数与操作数符号相同时，t0符号位为0，否则为1
   rtl_xor(&t1, &id_dest->val, &t2);
@@ -150,6 +146,7 @@ make_EHelper(neg) {
   //正数减去负数得到负数，或者负数减去正数得到正数
   rtl_msb(&t0, &t0, id_dest->width);
   //取符号位
+  //不可能overflow...?
   rtl_set_OF(&t0);
   print_asm_template1(neg);
 }
