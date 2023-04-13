@@ -50,7 +50,7 @@ make_EHelper(sar) {
     rtl_sext(&t2, &id_dest->val, 2);
     
     printf("id_aftersext %08x\n", t2);
-    rtl_sar(&t0, &id_dest->val, &t2);
+    rtl_sar(&t0, &t2, &id_src->val);
     printf("id_dest_after %08x\n", t0);
     printf("-------\n");
     operand_write(id_dest, &t0);
