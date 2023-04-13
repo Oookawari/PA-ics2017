@@ -47,7 +47,7 @@ make_EHelper(sar) {
   printf("id_dest %08x\n", id_dest->val);
   if(decoding.is_operand_size_16) {
     
-    rtl_sext(&t2, &id_src->val, 2);
+    rtl_sext(&t2, &id_dest->val, 2);
     
     printf("id_aftersext %08x\n", t2);
     rtl_sar(&t0, &id_dest->val, &t2);
