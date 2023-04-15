@@ -1,7 +1,7 @@
 #include "cpu/exec.h"
 
 make_EHelper(mov) {
-  printf("still alive %08x\n", cpu.eip);
+  //printf("still alive %08x\n", cpu.eip);
   operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
 }
