@@ -44,3 +44,47 @@ make_EHelper(nemu_trap) {
   diff_test_skip_qemu();
 #endif
 }
+
+make_EHelper(rol) {
+  if(id_dest->width == 2) {assert(0);}
+  uint32_t count = id_src->val;
+  uint32_t temp = count;
+  uint32_t rm = id_dest->val;
+  while(temp != 0) {
+    uint32_t highbit = rm & 0x80000000;
+    if(highbit == 0) {
+      rm *= 2;
+      rm += 0;
+      rtl_set_ZF(&tzero);
+    }
+    else {
+      rm *= 2;
+      rm += 1;
+      rtl_li(&t0, 1);
+      rtl_set_ZF(&t0);
+    }
+    temp --;
+  }
+  if(count == 1) {
+    uint32_t highbit = rm & 0x80000000;
+    if(highbit == 0) {
+      if(cpu.CF == 0) {
+        rtl_set_OF(&tzero);
+      }
+      else {
+        rtl_li(&t0, 1);
+        rtl_set_OF(&t0);
+      }
+    }
+    else {
+      if(cpu.CF == 0) {
+        rtl_li(&t0, 1);
+        rtl_set_OF(&t0);
+      }
+      else {
+        rtl_set_OF(&tzero);
+      }
+    }
+  }
+  print_asm("rol");
+}
