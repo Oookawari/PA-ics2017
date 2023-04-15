@@ -65,6 +65,8 @@ make_EHelper(rol) {
     }
     temp --;
   }
+  rtl_li(&t3, rm);
+  operand_write(id_dest, &t3);
   if(count == 1) {
     uint32_t highbit = rm & 0x80000000;
     if(highbit == 0) {
