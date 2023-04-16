@@ -24,7 +24,6 @@ make_EHelper(jmp_rm) {
 }
 
 make_EHelper(call) {
-  printf("call %08x", decoding.seq_eip);
   //装载eip至temp
   //rtl_li(&t0, cpu.eip);
   rtl_li(&t0, decoding.seq_eip);

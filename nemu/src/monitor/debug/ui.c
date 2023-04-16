@@ -131,6 +131,7 @@ static int cmd_info(char *args) {
     printf("ebp: %08x\tbp: %04x\n",cpu.gpr[5]._32,cpu.gpr[5]._16);
     printf("esi: %08x\tsi: %04x\n",cpu.gpr[6]._32,cpu.gpr[6]._16);
     printf("edi: %08x\tdi: %04x\n",cpu.gpr[7]._32,cpu.gpr[7]._16);
+    printf("eip: %08x\n", cpu.eip);
     printf("-----------------------\n");
   }
   else if(strcmp(arg, "w") == 0) {
