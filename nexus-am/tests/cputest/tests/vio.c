@@ -1,6 +1,6 @@
 #include "trap.h"
 int main() {
-        unsigned char *p = (void*)0x8049000;
+        volatile unsigned char *p = (void*)0x8049000;
 	*p = 0;
 	while(*p != 0xff);
 	*p = 0x33;
