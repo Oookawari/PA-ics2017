@@ -1,8 +1,4 @@
 #include "trap.h"
-void fun(){
-	
-
-}
 int main() {
         unsigned char *p = (void*)0x8049000;
 	*p = 0;
