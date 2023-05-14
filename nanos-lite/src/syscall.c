@@ -8,6 +8,7 @@ _RegSet* do_syscall(_RegSet *r) {
   a[2] = SYSCALL_ARG3(r);
   a[3] = SYSCALL_ARG4(r);
   printf("a[0]:%d", a[0]);
+  printf("SYS_exit:%d\n", SYS_exit);
   switch (a[0]) {
     case SYS_none:
       r->eax = 1; 
