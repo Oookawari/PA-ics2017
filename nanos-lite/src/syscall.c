@@ -11,6 +11,11 @@ _RegSet* do_syscall(_RegSet *r) {
   a[3] = SYSCALL_ARG4(r);
   printf("a[0]:%d", a[0]);
   printf("SYS_exit:%d\n", SYS_exit);
+  printf("SYS_open:%d\n", SYS_open);
+  printf("SYS_read:%d\n", SYS_read);
+  printf("SYS_exit:%d\n", SYS_exit);
+  printf("SYS_exit:%d\n", SYS_exit);
+  printf("SYS_exit:%d\n", SYS_exit);
   switch (a[0]) {
     case SYS_none:
       r->eax = 1; 
