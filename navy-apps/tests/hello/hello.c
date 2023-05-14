@@ -10,7 +10,7 @@ int main() {
     if (j == 10000) {
       printf("Hello World for the %dth time\n", i ++);
       j = 0;
-	break;
+	//break;
     }
   }
   return 0;
