@@ -58,8 +58,14 @@ int _write(int fd, void *buf, size_t count){
   _syscall_(SYS_write, fd, (uintptr_t)buf, count);
 }
 
+extern uint32_t _end;
+
 void *_sbrk(intptr_t increment){
-  return (void *)-1;
+  intptr_t program_break = (intptr_t)&_end;
+  intptr_t program_break_copy = (intptr_t)&_end;
+  rtv = _syscall_(SYS_brk, program_break + increment, program_break, 0);
+  if(rtv == 0) return (void *)program_break_copy;
+  else return (void *)-1;
 }
 
 int _read(int fd, void *buf, size_t count) {

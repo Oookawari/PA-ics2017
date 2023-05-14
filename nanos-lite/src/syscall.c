@@ -50,7 +50,7 @@ _RegSet* do_syscall(_RegSet *r) {
   a[1] = SYSCALL_ARG2(r);
   a[2] = SYSCALL_ARG3(r);
   a[3] = SYSCALL_ARG4(r);
-  //printf("a[0] : %d", a[0]);
+  printf("a[0] : %d", a[0]);
   switch (a[0]) {
     case SYS_none:
       r->eax = 1; 
@@ -63,6 +63,10 @@ _RegSet* do_syscall(_RegSet *r) {
       }
     case SYS_exit:
       _halt(a[1]);
+      break;
+    case SYS_brk:
+      a[2] = a[1];
+      r->eax = 0;
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
