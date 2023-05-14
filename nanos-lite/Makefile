@@ -29,7 +29,7 @@ update-ramdisk-fsimg: update-fsimg
 	@wc -c $(FSIMG_FILES) | grep -v 'total$$' | sed -e 's+ $(FSIMG_PATH)+ +' | awk -v sum=0 '{print "\x7b\x22" $$2 "\x22\x2c " $$1 "\x2c " sum "\x7d\x2c";sum += $$1}' > src/files.h
 
 src/syscall.h: $(NAVY_HOME)/libs/libos/src/syscall.h
-	ln -sf $^ $@
+	#ln -sf $^ $@
 
 update: update-ramdisk-objcopy src/syscall.h
 	@touch src/initrd.S
