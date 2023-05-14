@@ -3,6 +3,9 @@
 
 #define ENTRY_START 0x100000
 #define EFLAG_INIT 0x00000002
+#define IDTR_BASE_INIT 0x0
+#define IDTR_LIMIT_INIT 0x03FF
+#define CS_INIT 0x8
 void init_difftest();
 void init_regex();
 void init_wp_pool();
@@ -83,6 +86,9 @@ static inline void restart() {
   /* Set the initial instruction pointer. */
   cpu.eip = ENTRY_START;
   cpu.eflags = EFLAG_INIT;
+  cpu.IDTR.base = IDTR_BASE_INIT;
+  cpu.IDTR.limit = IDTR_LIMIT_INIT;
+  cpu.cs = CS_INIT;
 #ifdef DIFF_TEST
   init_qemu_reg();
 #endif

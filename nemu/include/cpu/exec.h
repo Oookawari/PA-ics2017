@@ -51,3 +51,5 @@ static inline const char* get_cc_name(int subcode) {
   print_asm(str(instr) "%c %s,%s,%s", suffix_char(id_dest->width), id_src->str, id_src2->str, id_dest->str)
 
 #endif
+
+void raise_intr(uint8_t NO, vaddr_t ret_addr);

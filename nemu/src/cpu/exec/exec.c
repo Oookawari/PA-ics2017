@@ -1,6 +1,8 @@
 #include "cpu/exec.h"
 #include "all-instr.h"
 
+#define TIMER_REQ 32
+
 typedef struct {
   DHelper decode;
   EHelper execute;
@@ -65,7 +67,7 @@ make_group(gp5,
 
   /* 0x0f 0x01*/
 make_group(gp7,
-    EMPTY, EMPTY, EMPTY, EMPTY,
+    EMPTY, EMPTY, EMPTY, EX(lidt),
     EMPTY, EMPTY, EMPTY, EMPTY)
 
 /* TODO: Add more instructions!!! */
