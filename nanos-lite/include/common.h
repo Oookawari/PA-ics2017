@@ -12,4 +12,3 @@ typedef char bool;
 #endif
 
 _RegSet* do_syscall(_RegSet *r);
-
