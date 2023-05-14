@@ -7,11 +7,13 @@ _RegSet* do_syscall(_RegSet *r) {
   a[1] = SYSCALL_ARG2(r);
   a[2] = SYSCALL_ARG3(r);
   a[3] = SYSCALL_ARG4(r);
+  printf("111111");
   switch (a[0]) {
     case SYS_none:
       r->eax = 1; 
       break;
     case SYS_exit:
+    printf("222222");
       _halt(a[1]);
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
