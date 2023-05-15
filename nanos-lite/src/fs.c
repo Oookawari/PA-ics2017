@@ -50,7 +50,7 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
   switch(fd){
     case FD_DISPINFO:
       dispinfo_read(buf, finfo.open_offset, len);
-      finfo.open_offset += len;
+      file_table[fd].open_offset += len;
       break;
     case FD_EVENTS:
       return events_read(buf, len);
