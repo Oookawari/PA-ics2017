@@ -72,7 +72,7 @@ _RegSet* do_syscall(_RegSet *r) {
       _halt(a[1]);
       break;
     case SYS_brk:
-      a[2] = a[1];
+      //a[2] = a[1];
       r->eax = 0;
       break;
     case SYS_open:  {

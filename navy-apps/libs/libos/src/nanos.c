@@ -63,6 +63,7 @@ extern uint32_t _end;
 void *_sbrk(intptr_t increment){
   intptr_t program_break = (intptr_t)&_end;
   intptr_t program_break_copy = (intptr_t)&_end;
+  program_break = program_break + increment;
   int rtv = _syscall_(SYS_brk, program_break + increment, program_break, 0);
   if(rtv == 0) return (void *)program_break_copy;
   else return (void *)-1;
