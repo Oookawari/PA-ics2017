@@ -19,7 +19,7 @@ size_t events_read(void *buf, size_t len) {
     char evt_str[len];
     long time = _uptime();
     sprintf(evt_str, "t %d\n", time);
-    for(int i = 0; i < strlen(evt_str); i++) { 
+    for(int i = 0; i <= strlen(evt_str); i++) { 
       if(i >= len) break;
       buffer[i] = evt_str[i];
     }
@@ -27,7 +27,7 @@ size_t events_read(void *buf, size_t len) {
   else {
     char evt_str[len];
     sprintf(evt_str, "ku %s\n", keyname[key_evt]);
-    for(int i = 0; i < strlen(evt_str); i++) { 
+    for(int i = 0; i <= strlen(evt_str); i++) { 
       if(i >= len) break;
       buffer[i] = evt_str[i];
     }
