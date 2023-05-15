@@ -31,12 +31,12 @@ void init_fs() {
 
 
 int fs_open(const char *pathname, int flags, int mode) {
-  printf("enter fs_open");
+  printf("enter fs_open\n");
   for(int i = 0; i < NR_FILES; i++) {
     if(strcmp(pathname, file_table[i].name) == 0){
       //初始化
       file_table[i].open_offset = 0;
-      printf("leave fs_open");
+      printf("leave fs_open\n");
       return i;
     }
   }
@@ -45,18 +45,18 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 
 ssize_t fs_read(int fd, void *buf, size_t len) {
-  printf("enter fsread");
+  printf("enter fsread\n");
   Finfo finfo = file_table[fd];
   if(finfo.size - finfo.open_offset <= len) len = finfo.size - finfo.open_offset;
   ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len);
   finfo.open_offset += len;
   
-  printf("leave fsread");
+  printf("leave fsread\n");
   return len;
 }
 
 ssize_t fs_write(int fd, const void *buf, size_t len) {
-  printf("enter fs_write");
+  printf("enter fs_write\n");
   Finfo finfo = file_table[fd];
   char *buffer = (char*) buf;
   //if(finfo.size - finfo.open_offset <= len) len = finfo.size - finfo.open_offset;
@@ -65,14 +65,14 @@ ssize_t fs_write(int fd, const void *buf, size_t len) {
     case FD_STDERR:
       for(int i = 0; i < len; i++) 
         _putc(buffer[i]);
-      printf("leave fs_write 1");
+      printf("leave fs_write 1\n");
       return len;
     default:
       if(finfo.size - finfo.open_offset <= len) 
         len = finfo.size - finfo.open_offset;
       ramdisk_write(buf, finfo.disk_offset + finfo.open_offset, len);
       finfo.open_offset += len;
-      printf("leave fs_write 2");
+      printf("leave fs_write 2\n");
       return len;
   }
   return -1;
@@ -83,25 +83,25 @@ int fs_close(int fd) {
 }
 
 size_t fs_filesz(int fd){
-  printf("enter fs_filesz");
+  printf("enter fs_filesz\n");
   return file_table[fd].size;
 }
 
 off_t fs_lseek(int fd, off_t offset, int whence){
-  printf("enter fs_lseek");
+  printf("enter fs_lseek\n");
   Finfo finfo = file_table[fd];
   switch(whence){
     case SEEK_SET:
       finfo.open_offset = offset;
-      printf("enter fs_lseek1");
+      printf("enter fs_lseek1\n");
       return finfo.open_offset;
     case SEEK_CUR:
       finfo.open_offset += offset;
-      printf("enter fs_lseek2");
+      printf("enter fs_lseek2\n");
       return finfo.open_offset;
     case SEEK_END:
       finfo.open_offset = finfo.size + offset;
-      printf("enter fs_lseek3");
+      printf("enter fs_lseek3\n");
       return finfo.open_offset;
      default: return -1;
   }
