@@ -49,9 +49,10 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
   Finfo finfo = file_table[fd];
   switch(fd){
     case FD_DISPINFO:
+      if(finfo.size - finfo.open_offset <= len) len = finfo.size - finfo.open_offset;
       dispinfo_read(buf, finfo.open_offset, len);
       file_table[fd].open_offset += len;
-      break;
+      return len;
     case FD_EVENTS:
       return events_read(buf, len);
     default:
@@ -60,8 +61,33 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
       file_table[fd].open_offset += len;
       return len;
   }
-  return len;
 }
+/*
+ssize_t fs_read(int fd, void *buf, size_t len){
+    Finfo *fp = &file_table[fd];
+    
+    ssize_t delta_len = fp->size - fp->open_offset;
+    ssize_t write_len = delta_len < len?delta_len:len;
+
+    switch(fd){
+        case FD_STDOUT: case FD_STDERR:
+            return -1;
+        case FD_DISPINFO:
+            dispinfo_read(buf, fp->open_offset, len);
+            break;
+        case FD_EVENTS:
+            return events_read(buf, len);
+        default:
+            if(fd < 6 || fd >= NR_FILES) return -1;
+            ramdisk_read(buf, fp->disk_offset + fp->open_offset, write_len);
+            break;
+    }
+
+    fp->open_offset += write_len;
+    // fs_lseek()
+    return write_len;
+}*/
+
 
 /*
 void fb_write(const void *buf, off_t offset, size_t len);
