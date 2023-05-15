@@ -84,10 +84,9 @@ size_t fs_filesz(int fd){
   return file_table[fd].size;
 }
 
-
+/*
 off_t fs_lseek(int fd, off_t offset, int whence){
   printf("enter fs_lseek\n");
-  printf("offset: %d", offset);
   Finfo finfo = file_table[fd];
   switch(whence){
     case SEEK_SET:
@@ -104,5 +103,28 @@ off_t fs_lseek(int fd, off_t offset, int whence){
       return finfo.open_offset;
      default: return -1;
   }
+}
+*/
+off_t fs_lseek(int fd, off_t offset, int whence){
+    
+    Finfo *fp = &file_table[fd];
+
+    if(fd >= NR_FILES) return 0;
+
+    switch(whence){
+        case SEEK_SET:
+            break;
+        case SEEK_CUR:
+            offset = fp->open_offset + offset;
+            break;
+        case SEEK_END:
+            offset = fp->size + offset;
+            break;
+        default: return -1;
+    }
+    if(offset < 0 || offset > fp->size) return -1;
+    fp->open_offset = offset;
+    printf("enter fs_lseek1, open_offset: %d\n", fp->open_offset);
+    return fp->open_offset;
 }
 
