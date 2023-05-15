@@ -28,6 +28,7 @@ static Finfo file_table[] __attribute__((used)) = {
 void init_fs() {
   // TODO: initialize the size of /dev/fb
 }
+
 /*
 int fs_open(const char *pathname, int flags, int mode) {
   printf("enter fs_open\n");
@@ -42,6 +43,7 @@ int fs_open(const char *pathname, int flags, int mode) {
   assert(0);//not found
   return -1;
 }
+
 ssize_t fs_read(int fd, void *buf, size_t len) {
   printf("enter fsread\n");
   Finfo finfo = file_table[fd];
@@ -52,11 +54,11 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
   printf("leave fsread\n");
   return len;
 }
+
 ssize_t fs_write(int fd, const void *buf, size_t len) {
   printf("enter fs_write\n");
   Finfo finfo = file_table[fd];
   char *buffer = (char*) buf;
-  //if(finfo.size - finfo.open_offset <= len) len = finfo.size - finfo.open_offset;
   switch(fd){
     case FD_STDOUT: 
     case FD_STDERR:
@@ -64,6 +66,9 @@ ssize_t fs_write(int fd, const void *buf, size_t len) {
         _putc(buffer[i]);
       printf("leave fs_write 1\n");
       return len;
+    case FD_FB:
+      fb_write(buf, fp->open_offset, len);
+      break;
     default:
       if(finfo.size - finfo.open_offset <= len) 
         len = finfo.size - finfo.open_offset;
@@ -136,6 +141,7 @@ ssize_t fs_read(int fd, void *buf, size_t len){
             return events_read(buf, len);
         default:
             if(fd < 6 || fd >= NR_FILES) return -1;
+            printf("fp->open_offset: %d\n", fp->open_offset);
             ramdisk_read(buf, fp->disk_offset + fp->open_offset, write_len);
             break;
     }
