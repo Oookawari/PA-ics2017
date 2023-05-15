@@ -59,23 +59,14 @@ int _write(int fd, void *buf, size_t count){
 }
 
 extern uint32_t _end;
-static intptr_t brk = (intptr_t)&_end;
 
 void *_sbrk(intptr_t increment){
-  /*intptr_t program_break = (intptr_t)&_end;
-  intptr_t program_break_copy = (intptr_t)&_end;
-  program_break = program_break + increment;
+  intptr_t program_break = (intptr_t)&_end;
+  intptr_t program_break_copy = program_break;
+  program_break = program_break_copy + increment;
   int rtv = _syscall_(SYS_brk, program_break + increment, program_break, 0);
   if(rtv == 0) return (void *)program_break_copy;
-  else return (void *)-1;*/
-  intptr_t pre = brk;
-  intptr_t now=pre+increment;//记录增加后的位置
-  intptr_t res = _syscall_(SYS_brk,now,0,0);//系统调用
-  if (res==0){//若成功，则返回原位置
-    brk=now;
-    return (void*)pre;
-  }//否则返回-1
-  return (void *)-1;
+  else return (void *)-1;
 }
 
 int _read(int fd, void *buf, size_t count) {
