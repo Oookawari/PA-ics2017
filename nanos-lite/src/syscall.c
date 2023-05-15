@@ -81,7 +81,7 @@ _RegSet* do_syscall(_RegSet *r) {
       break;
     }
     case SYS_read:  {
-      int rtv =  fs_read(a[1], (uint8_t *)a[2], a[3]); 
+      int rtv =  fs_read(a[1], (void *)a[2], a[3]); 
       r->eax = rtv;
       break;
     }
