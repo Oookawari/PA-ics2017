@@ -76,22 +76,22 @@ _RegSet* do_syscall(_RegSet *r) {
       r->eax = 0;
       break;
     case SYS_open:  {
-      int rtv =  fs_open((char *)a[1], a[2], a[3]);
+      int rtv = fs_open((char *)a[1], a[2], a[3]);
       r->eax = rtv; 
       break;
     }
     case SYS_read:  {
-      int rtv =  fs_read(a[1], (void *)a[2], a[3]); 
+      int rtv = fs_read(a[1], (void *)a[2], a[3]); 
       r->eax = rtv;
       break;
     }
     case SYS_close: {
-      int rtv =  fs_close(a[1]); 
+      int rtv = fs_close(a[1]); 
       r->eax = rtv;
       break;
     }
     case SYS_lseek: {
-      off_t rtv =  fs_lseek(a[1], a[2], a[3]);
+      off_t rtv = fs_lseek(a[1], a[2], a[3]);
       r->eax = rtv; 
       break;
     }
