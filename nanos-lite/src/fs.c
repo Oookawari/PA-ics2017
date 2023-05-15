@@ -127,7 +127,7 @@ void dispinfo_read(void *buf, off_t offset, size_t len);
 size_t events_read(void *buf, size_t len);
 ssize_t fs_read(int fd, void *buf, size_t len){
     Finfo *fp = &file_table[fd];
-    
+    printf("fs_read: fp->open_offset %d\n",fp->open_offset);
     ssize_t delta_len = fp->size - fp->open_offset;
     ssize_t write_len = delta_len < len?delta_len:len;
 
@@ -141,7 +141,6 @@ ssize_t fs_read(int fd, void *buf, size_t len){
             return events_read(buf, len);
         default:
             if(fd < 6 || fd >= NR_FILES) return -1;
-            printf("fp->open_offset: %d\n", fp->open_offset);
             ramdisk_read(buf, fp->disk_offset + fp->open_offset, write_len);
             break;
     }
@@ -155,7 +154,7 @@ void fb_write(const void *buf, off_t offset, size_t len);
 ssize_t fs_write(int fd, uint8_t *buf, size_t len){
     
     Finfo *fp = &file_table[fd];
-
+    printf("fs_write: fp->open_offset %d\n",fp->open_offset);
     ssize_t delta_len = fp->size - fp->open_offset;
     ssize_t write_len = delta_len < len?delta_len:len;
 
@@ -200,6 +199,8 @@ off_t fs_lseek(int fd, off_t offset, int whence){
     }
     if(offset < 0 || offset > fp->size) return -1;
     fp->open_offset = offset;
+    
+    printf("fs_lseek: fp->open_offset %d\n",fp->open_offset);
     return fp->open_offset;
 }
 
