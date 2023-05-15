@@ -112,6 +112,7 @@ void dispinfo_read(void *buf, off_t offset, size_t len);
 void ramdisk_read(void *buf, off_t offset, size_t len);
 size_t events_read(void *buf, size_t len);
 ssize_t fs_read(int fd, void *buf, size_t len){
+  printf("fd: %d, buf : %d, len: %d",fd, buf, len);
   printf("enter fsread\n");
     Finfo *fp = &file_table[fd];
     
