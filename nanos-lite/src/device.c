@@ -26,13 +26,19 @@ size_t events_read(void *buf, size_t len) {
   }
   else {
     char evt_str[len];
-    sprintf(evt_str, "ku %s\n", keyname[key_evt]);
-    for(int i = 0; i <= strlen(evt_str); i++) { 
-      if(i >= len) break;
-      buffer[i] = evt_str[i];
+    if(key_evt & KEYDOWN_MASK){
+      sprintf(evt_str, "kd %s\n", keyname[key_evt]);
+      for(int i = 0; i <= strlen(evt_str); i++) { 
+        if(i >= len) break;
+        buffer[i] = evt_str[i];
+      }
     }
-    if((key_evt & KEYDOWN_MASK) && len >= 2){
-      buffer[1] = 'd';
+    else {
+      sprintf(evt_str, "ku %s\n", keyname[key_evt]);
+      for(int i = 0; i <= strlen(evt_str); i++) { 
+        if(i >= len) break;
+        buffer[i] = evt_str[i];
+      }
     }
   }
   return strlen(buffer);
