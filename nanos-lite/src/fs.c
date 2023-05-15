@@ -42,14 +42,15 @@ int fs_open(const char *pathname, int flags, int mode) {
   assert(0);//not found
   return -1;
 }
+
 void dispinfo_read(void *buf, off_t offset, size_t len);
 size_t events_read(void *buf, size_t len);
-
 ssize_t fs_read(int fd, void *buf, size_t len) {
   Finfo finfo = file_table[fd];
   switch(fd){
     case FD_DISPINFO:
       dispinfo_read(buf, finfo.open_offset, len);
+      finfo.open_offset += len;
       break;
     case FD_EVENTS:
       return events_read(buf, len);
@@ -111,6 +112,7 @@ off_t fs_lseek(int fd, off_t offset, int whence){
      default: return -1;
   }
 }
+
 
 void fb_write(const void *buf, off_t offset, size_t len);
 void ramdisk_write(const void *buf, off_t offset, size_t len);
