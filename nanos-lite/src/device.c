@@ -13,12 +13,26 @@ unsigned long _uptime();
 int _read_key();
 
 size_t events_read(void *buf, size_t len) {
+  int key_value = _read_key();
+    if(key_value == _KEY_NONE){
+        snprintf(buf, len, "t %d\n", _uptime());
+    }
+    else if(key_value & 0x8000){
+        key_value ^= 0x8000;
+        snprintf(buf, len, "kd %s\n", keyname[key_value]);
+    }
+    else{
+        snprintf(buf, len, "ku %s\n", keyname[key_value]);
+    }
+    return strlen(buf);
+
+  /*
   char* buffer = (char* )buf;
   int key_evt = _read_key();
   if(key_evt == _KEY_NONE){
     char evt_str[len];
     long time = _uptime();
-    sprintf(evt_str, "t %ld\n", time);
+    sprintf(evt_str, "t %d\n", time);
     for(int i = 0; i < len; i++) {  
       buffer[i] = evt_str[i];
     }
@@ -33,7 +47,7 @@ size_t events_read(void *buf, size_t len) {
       buffer[1] = 'd';
     }
   }
-  return strlen(buf);
+  return strlen(buf);*/
 }
 
 static char dispinfo[128] __attribute__((used));
