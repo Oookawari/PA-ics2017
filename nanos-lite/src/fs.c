@@ -27,6 +27,8 @@ static Finfo file_table[] __attribute__((used)) = {
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+  file_table[FD_FB].size = 4 * _screen.width * _screen.height;
+  file_table[FD_FB].open_offset = 0;
 }
 
 int fs_open(const char *pathname, int flags, int mode) {
@@ -41,14 +43,27 @@ int fs_open(const char *pathname, int flags, int mode) {
   return -1;
 }
 
+void dispinfo_read(void *buf, off_t offset, size_t len);
+size_t events_read(void *buf, size_t len);
+
 ssize_t fs_read(int fd, void *buf, size_t len) {
   Finfo finfo = file_table[fd];
-  if(finfo.size - finfo.open_offset <= len) len = finfo.size - finfo.open_offset;
-  ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len);
-  file_table[fd].open_offset += len;
-  
+  switch(fd){
+    case FD_DISPINFO:
+      dispinfo_read(buf, finfo.open_offset, len);
+      break;
+    case FD_EVENTS:
+      return events_read(buf, len);
+    default:
+      if(finfo.size - finfo.open_offset <= len) len = finfo.size - finfo.open_offset;
+      ramdisk_read(buf, finfo.disk_offset + finfo.open_offset, len);
+      file_table[fd].open_offset += len;
+      return len;
+  }
   return len;
 }
+
+void fb_write(const void *buf, off_t offset, size_t len);
 
 ssize_t fs_write(int fd, const void *buf, size_t len) {
   Finfo finfo = file_table[fd];
@@ -60,7 +75,7 @@ ssize_t fs_write(int fd, const void *buf, size_t len) {
         _putc(buffer[i]);
       return len;
     case FD_FB:
-      //fb_write(buf, finfo.open_offset, len);
+      fb_write(buf, finfo.open_offset, len);
       break;
     default:
       if(finfo.size - finfo.open_offset <= len) 
