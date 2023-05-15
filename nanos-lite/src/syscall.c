@@ -64,7 +64,7 @@ _RegSet* do_syscall(_RegSet *r) {
       break;
     case SYS_write:
       {
-      int rtv = sys_write(a[1], a[2], a[3]);
+      int rtv = fs_write(a[1], (void *)a[2], a[3]);
       r->eax = rtv;
       break;
       }
