@@ -27,6 +27,7 @@ size_t events_read(void *buf, size_t len) {
   else {
     char evt_str[len];
     if(key_evt & KEYDOWN_MASK){
+      key_evt &= 0x7FFF;
       sprintf(evt_str, "kd %s\n", keyname[key_evt]);
       for(int i = 0; i <= strlen(evt_str); i++) { 
         if(i >= len) break;
