@@ -104,13 +104,13 @@ off_t fs_lseek(int fd, off_t offset, int whence){
     case SEEK_SET:
       file_table[fd].open_offset = offset;
       return file_table[fd].open_offset;
-    case SEEK_CUR:
-      file_table[fd].open_offset += offset;
-      return file_table[fd].open_offset;
     case SEEK_END:
       file_table[fd].open_offset = finfo.size + offset;
       return file_table[fd].open_offset;
-     default: return -1;
+    case SEEK_CUR:
+      file_table[fd].open_offset += offset;
+      return file_table[fd].open_offset;
+    default: return -1;
   }
 }
 
