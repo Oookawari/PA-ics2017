@@ -108,9 +108,29 @@ paddr_t page_translate(vaddr_t vaddr, bool is_write){
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
   if(cpu.cr0.paging) {
-    if (((addr + len - 1) & (~PAGE_MASK)) != (addr & (~PAGE_MASK))) {
-      printf("vaddr_read : this is a special case, you can handle it later");
-      assert(0);
+    if ((addr & PGMASK) + len > PGSIZE) {
+      //Assert(0, "vaddr_read : this is a special case, you can handle it later");
+      /*分段读取*/
+      /*第一段的长度*/
+      int length = PGSIZE - (addr & PGMASK);
+      uint32_t part1 = vaddr_read(addr, length);
+      uint32_t part2 = vaddr_read(addr + length, len - length);
+      if(length == 0) {
+        /*这不对吧*/
+        Assert(0, "vaddr_read运行到了一些不该运行到的东西 : length == 0 ");
+      }
+      else if(length == 1) {
+        return part1 + part2 * 0x100;
+      }
+      else if(length == 2) {
+        return part1 + part2 * 0x10000;
+      }
+      else if(length == 3) {
+        return part1 + part2 * 0x1000000;
+      }
+      else{
+        Assert(0,"vaddr_read运行到了一些不该运行到的东西 : else");
+      }
     }
     else {
       paddr_t paddr = page_translate(addr, false);
@@ -120,7 +140,8 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
   else {
     return paddr_read(addr, len);
   }
-   /*bool flag = ((addr + len - 1) & (~PAGE_MASK)) != (addr & (~PAGE_MASK));
+  /*
+   bool flag = ((addr + len - 1) & (~PAGE_MASK)) != (addr & (~PAGE_MASK));
     if(flag == true){
         int len1 = PAGE_SIZE - (addr & 0xfff);
         int len2 = len - len1;
@@ -139,9 +160,31 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
   if(cpu.cr0.paging) {
-    if (((addr + len - 1) & (~PAGE_MASK)) != (addr & (~PAGE_MASK))) {
-      printf("vaddr_write : this is a special case, you can handle it later");
-      assert(0);
+    if ((addr & PGMASK) + len > PGSIZE) {
+      //printf("vaddr_write : this is a special case, you can handle it later");
+      int length = PGSIZE - (addr & PGMASK);
+      uint32_t write_part1 = 0;
+      uint32_t write_part2 = 0;
+      if(length == 0) {
+        Assert(0, "vaddr_write运行到了一些不该运行到的东西 : length == 0 ");
+      }
+      else if(length == 1) {
+        write_part1 = data & 0xFF; 
+        write_part2 = data >> 2;
+      }
+      else if(length == 2) {
+        write_part1 = data & 0xFFFF; 
+        write_part2 = data >> 4;
+      }
+      else if(length == 3) {
+        write_part1 = data & 0xFF; 
+        write_part2 = data >> 6;
+      }
+      else{
+        Assert(0,"vaddr_writed运行到了一些不该运行到的东西 : else");
+      }
+      vaddr_write(addr, length, write_part1);
+      vaddr_write(addr + length, len - length, write_part2);
     }
     else {
       paddr_t paddr = page_translate(addr, true);
