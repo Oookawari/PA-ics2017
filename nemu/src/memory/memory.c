@@ -46,7 +46,7 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 
 paddr_t page_translate(vaddr_t vaddr, bool is_write){
   // 获取 CR3 寄存器中的页目录表基址
-  paddr_t directory_base = cpu.cr3.page_directory_base;
+  /*paddr_t directory_base = cpu.cr3.page_directory_base;
 
   // 计算页目录项地址
   uint32_t directory_index = (vaddr >> 22) & 0x3FF;
@@ -81,7 +81,29 @@ paddr_t page_translate(vaddr_t vaddr, bool is_write){
 
   // 计算物理地址并返回
   paddr_t paddr = (table_entry.page_frame << 12) | (vaddr & 0xFFF);
-  return paddr;
+  return paddr;*/
+      paddr_t paddr = vaddr;
+    /* only when protect mode and paging mode enable translate*/
+    if(cpu.cr0.protect_enable && cpu.cr0.paging){
+        /* initialize */
+        paddr_t pdeptr, pteptr;
+        PDE pde;
+        PTE pte;
+        /* find pde and read */
+        pdeptr = (paddr_t)(cpu.cr3.page_directory_base << 12) | (paddr_t)(((vaddr >> 22) & 0x3ff) * 4);
+        pde.val = paddr_read(pdeptr, 4);
+        assert(pde.present);
+        pde.accessed = 1;
+        /* find pte and read */
+        pteptr = (paddr_t)(pde.page_frame << 12) | (paddr_t)(((vaddr >> 12) & 0x3ff) * 4);
+        pte.val = paddr_read(pteptr, 4);
+        assert(pte.present);
+        pte.accessed = 1;
+        pte.dirty = (is_write == true) ? 1 : 0;
+        /* find page and read */
+        paddr = (paddr_t)(pte.page_frame << 12) | (paddr_t)(vaddr & 0xfff);
+    }
+    return paddr;
 }
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
