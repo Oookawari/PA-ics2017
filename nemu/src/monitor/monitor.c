@@ -90,7 +90,7 @@ static inline void restart() {
   cpu.IDTR.base = IDTR_BASE_INIT;
   cpu.IDTR.limit = IDTR_LIMIT_INIT;
   cpu.cs = CS_INIT;
-  cpu.cr0 = CR0_INIT;
+  cpu.cr0.val = CR0_INIT;
 #ifdef DIFF_TEST
   init_qemu_reg();
 #endif

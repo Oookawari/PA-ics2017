@@ -47,7 +47,7 @@ paddr_t page_translate(vaddr_t vaddr){
 }
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
-  if(cpu.PG) {
+  if(cpu.cr0.paging) {
     if ((addr & PGMASK) + len > PGSIZE) {
       /* this is a special case, you can handle it later.*/
       printf("vaddr_read : this is a special case, you can handle it later");
@@ -64,7 +64,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-  if(cpu.PG) {
+  if(cpu.cr0.paging) {
     if ((addr & PGMASK) + len > PGSIZE) {
       /* this is a special case, you can handle it later.*/
       printf("vaddr_write : this is a special case, you can handle it later");

@@ -2,7 +2,7 @@
 #define __REG_H__
 
 #include "common.h"
-
+#include "memory/mmu.h"
 enum { R_EAX, R_ECX, R_EDX, R_EBX, R_ESP, R_EBP, R_ESI, R_EDI };
 enum { R_AX, R_CX, R_DX, R_BX, R_SP, R_BP, R_SI, R_DI };
 enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
@@ -66,25 +66,27 @@ typedef struct {
     uint32_t base;
     uint16_t  limit;
   }IDTR;
-  union{
+  /*union{
     struct{
-    /*0*/uint32_t PE: 1;
-    /*1*/uint32_t MP: 1;
-    /*2*/uint32_t EM: 1;
-    /*3*/uint32_t TS: 1;
-    /*4*/uint32_t ET: 1;
-    /*5-30*/uint32_t : 26;
-    /*31*/uint32_t PG: 1;
+    uint32_t PE: 1;
+    uint32_t MP: 1;
+    uint32_t EM: 1;
+    uint32_t TS: 1;
+    uint32_t ET: 1;
+    uint32_t : 26;
+    uint32_t PG: 1;
     };
     rtlreg_t cr0;
   };
   union{
     struct{
-    /*0-11*/uint32_t : 12;
-    /*12-31*/uint32_t PDBR: 20;
+    uint32_t : 12;
+    uint32_t PDBR: 20;
     };
     rtlreg_t cr3;
-  };
+  };*/
+  CR0 cr0;
+  CR3 cr3;
 } CPU_state;
 
 extern CPU_state cpu;
