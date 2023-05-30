@@ -46,11 +46,11 @@ void paddr_write(paddr_t addr, int len, uint32_t data) {
 
 paddr_t page_translate(vaddr_t vaddr, bool is_write){
   // 获取 CR3 寄存器中的页目录表基址
-  /*paddr_t directory_base = cpu.cr3.page_directory_base;
+  paddr_t directory_base = cpu.cr3.page_directory_base;
 
   // 计算页目录项地址
   uint32_t directory_index = (vaddr >> 22) & 0x3FF;
-  paddr_t directory_entry_addr = (directory_base & 0xFFFFF000) | (directory_index << 2);
+  paddr_t directory_entry_addr = (directory_base << 12) | (directory_index << 2);
 
   // 读取页目录项并进行有效性检查
   PDE directory_entry;
@@ -81,42 +81,38 @@ paddr_t page_translate(vaddr_t vaddr, bool is_write){
 
   // 计算物理地址并返回
   paddr_t paddr = (table_entry.page_frame << 12) | (vaddr & 0xFFF);
-  return paddr;*/
-      paddr_t paddr = vaddr;
-    /* only when protect mode and paging mode enable translate*/
+  return paddr;
+      /*paddr_t paddr = vaddr;
+     only when protect mode and paging mode enable translate
     if(cpu.cr0.protect_enable && cpu.cr0.paging){
-        /* initialize */
+
         paddr_t pdeptr, pteptr;
         PDE pde;
         PTE pte;
-        /* find pde and read */
+        
         pdeptr = (paddr_t)(cpu.cr3.page_directory_base << 12) | (paddr_t)(((vaddr >> 22) & 0x3ff) * 4);
         pde.val = paddr_read(pdeptr, 4);
         assert(pde.present);
         pde.accessed = 1;
-        /* find pte and read */
+        
         pteptr = (paddr_t)(pde.page_frame << 12) | (paddr_t)(((vaddr >> 12) & 0x3ff) * 4);
         pte.val = paddr_read(pteptr, 4);
         assert(pte.present);
         pte.accessed = 1;
         pte.dirty = (is_write == true) ? 1 : 0;
-        /* find page and read */
+        
         paddr = (paddr_t)(pte.page_frame << 12) | (paddr_t)(vaddr & 0xfff);
     }
-    return paddr;
+    return paddr;*/
 }
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
   if(cpu.cr0.paging) {
     if ((addr & PGMASK) + len > PGSIZE) {
-      //Assert(0, "vaddr_read : this is a special case, you can handle it later");
-      /*分段读取*/
-      /*第一段的长度*/
       int length = PGSIZE - (addr & PGMASK);
       uint32_t part1 = vaddr_read(addr, length);
       uint32_t part2 = vaddr_read(addr + length, len - length);
       if(length == 0) {
-        /*这不对吧*/
         Assert(0, "vaddr_read运行到了一些不该运行到的东西 : length == 0 ");
       }
       else if(length == 1) {
@@ -140,28 +136,11 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
   else {
     return paddr_read(addr, len);
   }
-  /*
-   bool flag = ((addr + len - 1) & (~PAGE_MASK)) != (addr & (~PAGE_MASK));
-    if(flag == true){
-        int len1 = PAGE_SIZE - (addr & 0xfff);
-        int len2 = len - len1;
-        paddr_t addr1 = page_translate(addr, false);
-        paddr_t addr2 = page_translate(addr + len1, false);
-        uint32_t val1 = paddr_read(addr1, len1);
-        uint32_t val2 = paddr_read(addr2, len2);
-        return val1 | val2 << (len1 << 3);
-        
-        }
-    else{
-        paddr_t paddr = page_translate(addr, false);
-        return paddr_read(paddr, len);
-    }*/
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
   if(cpu.cr0.paging) {
     if ((addr & PGMASK) + len > PGSIZE) {
-      //printf("vaddr_write : this is a special case, you can handle it later");
       int length = PGSIZE - (addr & PGMASK);
       uint32_t write_part1 = 0;
       uint32_t write_part2 = 0;
@@ -194,17 +173,4 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
   else{
     return paddr_write(addr, len, data);
   }
-  /*bool flag = ((addr + len - 1) & (~PAGE_MASK)) != (addr & (~PAGE_MASK));
-    if(flag == true){
-        int len1 = PAGE_SIZE - (addr & 0x3ff);
-        int len2 = len - len1;
-        paddr_t addr1 = page_translate(addr, true);
-        paddr_t addr2 = page_translate(addr + len1, true);
-        paddr_write(addr1, len1, data & ((1 << (len1 << 3)) - 1));
-        paddr_write(addr2, len2, data >> (len1 << 3));
-    }
-    else{
-        paddr_t paddr = page_translate(addr, true);
-        paddr_write(paddr, len, data);
-    }*/
 }
