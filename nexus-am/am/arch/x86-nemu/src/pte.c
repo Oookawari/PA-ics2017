@@ -66,6 +66,7 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  /*
   // 获取页目录基地址
   PDE *pgdir = (PDE *)p->ptr;
 
@@ -88,7 +89,24 @@ void _map(_Protect *p, void *va, void *pa) {
   PTE *pgtable = (PTE *)(pgdir[dir_index] & 0xFFFFF000);
 
   // 填写页表项，映射虚拟地址到物理地址
-  pgtable[table_index] = ((uint32_t)pa & 0xFFFFF000) | 0x00000001;
+  pgtable[table_index] = ((uint32_t)pa & 0xFFFFF000) | 0x00000001;*/
+  /* get pde address */
+  PDE *pg_dir = p->ptr;  // base pde dir
+  /* select a pde */
+  PDE *pde = &pg_dir[PDX(va)];
+  PTE *pgtable;
+  /* if a new page table is needed */
+  if(*pde & PTE_P){ // 
+    pgtable = (PTE *)PTE_ADDR(*pde);
+  }
+  else{
+    pgtable = (PTE *)palloc_f();
+    for(int i =0; i < NR_PTE; i ++){
+      pgtable[i] = 0;
+    }
+    *pde = PTE_ADDR(pgtable) | PTE_P;
+  }
+  pgtable[(PTX(va))] = PTE_ADDR(pa) | PTE_P;
 }
 
 void _unmap(_Protect *p, void *va) {
