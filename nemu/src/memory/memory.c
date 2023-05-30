@@ -107,9 +107,8 @@ paddr_t page_translate(vaddr_t vaddr, bool is_write){
 }
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
-  if(cpu.cr0.paging) {
+  /*if(cpu.cr0.paging) {
     if ((addr & PGMASK) + len > PGSIZE) {
-      /* this is a special case, you can handle it later.*/
       printf("vaddr_read : this is a special case, you can handle it later");
       assert(0);
     }
@@ -120,13 +119,34 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
   }
   else {
     return paddr_read(addr, len);
-  }
+  }*/
+   bool flag = ((addr + len - 1) & (~PAGE_MASK)) != (addr & (~PAGE_MASK));
+    /* flag equals to true means data cross the page boundry */
+    if(flag == true){
+        /* this is a special case, you can handle it later. */
+        /* len of instruction 1 */
+        int len1 = PAGE_SIZE - (addr & 0xfff);
+        /* len of instruction 2 */
+        int len2 = len - len1;
+        /* read instruction 1 and 2 addr from page table */
+        paddr_t addr1 = page_translate(addr, false);
+        paddr_t addr2 = page_translate(addr + len1, false);
+        /* read instruction 1 and 2 value from addr */
+        uint32_t val1 = paddr_read(addr1, len1);
+        uint32_t val2 = paddr_read(addr2, len2);
+        /* concat val1 and val2 */
+        return val1 | val2 << (len1 << 3);
+        
+        }
+    else{
+        paddr_t paddr = page_translate(addr, false);
+        return paddr_read(paddr, len);
+    }
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
-  if(cpu.cr0.paging) {
+  /*if(cpu.cr0.paging) {
     if ((addr & PGMASK) + len > PGSIZE) {
-      /* this is a special case, you can handle it later.*/
       printf("vaddr_write : this is a special case, you can handle it later");
       assert(0);
     }
@@ -137,5 +157,22 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
   }
   else{
     return paddr_write(addr, len, data);
-  }
+  }*/
+  bool flag = ((addr + len - 1) & (~PAGE_MASK)) != (addr & (~PAGE_MASK));
+    if(flag == true){
+        /* len of instruction 1 */
+        int len1 = PAGE_SIZE - (addr & 0x3ff);
+        /* len of instruction 2 */
+        int len2 = len - len1;
+        /* read instruction 1 and 2 addr from page table */
+        paddr_t addr1 = page_translate(addr, true);
+        paddr_t addr2 = page_translate(addr + len1, true);
+        /* write data */
+        paddr_write(addr1, len1, data & ((1 << (len1 << 3)) - 1));
+        paddr_write(addr2, len2, data >> (len1 << 3));
+    }
+    else{
+        paddr_t paddr = page_translate(addr, true);
+        paddr_write(paddr, len, data);
+    }
 }
