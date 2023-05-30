@@ -66,6 +66,29 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  // 获取页目录基地址
+  PDE *pgdir = (PDE *)p->ptr;
+
+  // 获取虚拟地址的页目录索引、页表索引和页内偏移
+  uint32_t dir_index = ((uint32_t)va >> 22) & 0x3FF;
+  uint32_t table_index = ((uint32_t)va >> 12) & 0x3FF;
+  //uint32_t offset = (uint32_t)va & 0xFFF;
+
+  // 检查页目录项是否存在，若不存在则申请新的页表
+  if (!(pgdir[dir_index] & 0x00000001)) {
+    // 申请一页空闲的物理页
+    PDE *new_pt = palloc_f();
+
+    // 将新的页表物理地址填入页目录项
+    pgdir[dir_index] = (uint32_t)new_pt & 0xFFFFF000;
+    pgdir[dir_index] |= 0x00000001;
+  }
+
+  // 获取页表基地址
+  PTE *pgtable = (PTE *)(pgdir[dir_index] & 0xFFFFF000);
+
+  // 填写页表项，映射虚拟地址到物理地址
+  pgtable[table_index] = ((uint32_t)pa & 0xFFFFF000) | 0x00000001;
 }
 
 void _unmap(_Protect *p, void *va) {
