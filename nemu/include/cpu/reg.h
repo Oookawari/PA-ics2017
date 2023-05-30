@@ -66,6 +66,25 @@ typedef struct {
     uint32_t base;
     uint16_t  limit;
   }IDTR;
+  union{
+    struct{
+    /*0*/uint32_t PE: 1;
+    /*1*/uint32_t MP: 1;
+    /*2*/uint32_t EM: 1;
+    /*3*/uint32_t TS: 1;
+    /*4*/uint32_t ET: 1;
+    /*5-30*/uint32_t : 26;
+    /*31*/uint32_t PG: 1;
+    };
+    rtlreg_t cr0;
+  };
+  union{
+    struct{
+    /*0-11*/uint32_t : 12;
+    /*12-31*/uint32_t PDBR: 20;
+    };
+    rtlreg_t cr3;
+  };
 } CPU_state;
 
 extern CPU_state cpu;

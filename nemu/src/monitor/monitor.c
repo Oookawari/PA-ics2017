@@ -6,6 +6,7 @@
 #define IDTR_BASE_INIT 0x0
 #define IDTR_LIMIT_INIT 0x03FF
 #define CS_INIT 0x8
+#define CR0_INIT 0x60000011
 void init_difftest();
 void init_regex();
 void init_wp_pool();
@@ -89,6 +90,7 @@ static inline void restart() {
   cpu.IDTR.base = IDTR_BASE_INIT;
   cpu.IDTR.limit = IDTR_LIMIT_INIT;
   cpu.cs = CS_INIT;
+  cpu.cr0 = CR0_INIT;
 #ifdef DIFF_TEST
   init_qemu_reg();
 #endif
