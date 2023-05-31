@@ -7,6 +7,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
    */
   //依次将 EFLAGS,CS,EIP 寄存器的值压入堆栈
   rtl_push(&cpu.eflags);
+  cpu.IF = 0;
   rtl_push(&cpu.cs);
   //rtl_li(&t1, cpu.eip);
   rtl_li(&t1, ret_addr);
@@ -23,7 +24,6 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 
   decoding.jmp_eip = target;
   decoding.is_jmp = true;
-  cpu.IF = 0;
 
 }
 

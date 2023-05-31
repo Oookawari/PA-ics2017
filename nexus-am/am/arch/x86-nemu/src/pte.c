@@ -108,7 +108,7 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
   *(uint32_t*)(ustack.end - 16) = 0; //在这里获取不到cpu
   _RegSet fake_trap;
   fake_trap.cs = 0x8;
-  fake_trap.eflags = 0x02;
+  fake_trap.eflags = 0x00000202;
   fake_trap.eip = (uintptr_t)entry;
   memcpy((uint32_t*)(ustack.end - sizeof(_RegSet)), &fake_trap, sizeof(_RegSet));
   return (_RegSet *)(ustack.end - sizeof(_RegSet));
