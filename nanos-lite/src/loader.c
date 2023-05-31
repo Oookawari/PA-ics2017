@@ -31,7 +31,6 @@ uintptr_t loader(_Protect *as, const char *filename) {
       fs_read(fd, paddr, PGSIZE);
     }
     _map(as, DEFAULT_ENTRY + i * PGSIZE, paddr);
-    Log("va: 0x%08x, pa: 0x%08x", DEFAULT_ENTRY + i * PGSIZE, paddr);
   }
   fs_close(fd);
   return (uintptr_t)DEFAULT_ENTRY;

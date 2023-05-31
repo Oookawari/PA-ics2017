@@ -6,6 +6,7 @@ static PDE kpdirs[NR_PDE] PG_ALIGN;
 static PTE kptabs[PMEM_SIZE / PGSIZE] PG_ALIGN;
 static void* (*palloc_f)();
 static void (*pfree_f)(void*);
+void* memcpy(void*,const void*, int);
 
 _Area segments[] = {      // Kernel memory mappings
   {.start = (void*)0,          .end = (void*)PMEM_SIZE}
@@ -95,5 +96,18 @@ void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  return NULL;
+  //ustack.end -= 4;
+  *(uint32_t*)(ustack.end - 4) = 0; //参数，忽略为0
+  //ustack.end -= 4;
+  *(uint32_t*)(ustack.end - 8) = 0; //参数，忽略为0
+  //ustack.end -= 4;
+  *(uint32_t*)(ustack.end - 12) = 0; //参数，忽略为0
+  //ustack.end -= 4;
+  //*(uint32_t*)(ustack.end - 16) = cpu.eip; //eip
+  *(uint32_t*)(ustack.end - 16) = 0; //在这里获取不到cpu
+  _RegSet fake_trap;
+  fake_trap.cs = 0x8;
+  fake_trap.eip = (uintptr_t)entry;
+  memcpy((uint32_t*)(ustack.end - sizeof(_RegSet)), &fake_trap, sizeof(_RegSet));
+  return (_RegSet *)ustack.end - sizeof(_RegSet);
 }
