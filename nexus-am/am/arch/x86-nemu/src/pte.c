@@ -96,7 +96,7 @@ void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  /*
+ 
   //ustack.end -= 4;
   *(uint32_t*)(ustack.end - 4) = 0; //参数，忽略为0
   //ustack.end -= 4;
@@ -108,10 +108,11 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
   *(uint32_t*)(ustack.end - 16) = 0; //在这里获取不到cpu
   _RegSet fake_trap;
   fake_trap.cs = 0x8;
+  fake_trap.eflags = 0x02;
   fake_trap.eip = (uintptr_t)entry;
   memcpy((uint32_t*)(ustack.end - sizeof(_RegSet)), &fake_trap, sizeof(_RegSet));
   return (_RegSet *)ustack.end - sizeof(_RegSet);
-  */
+   /*
   struct { _RegSet *tf; } *pcb = ustack.start;
 
   uint32_t *stack = (uint32_t *)(ustack.end - 4);
@@ -121,10 +122,10 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
     *stack-- = 0;
 
   pcb->tf = (void *)(stack - sizeof(_RegSet));
-  pcb->tf->eflags = 0x2 | (1 << 9);  /* pre-set value | eflags.IF */
+  pcb->tf->eflags = 0x2 | (1 << 9);  pre-set value | eflags.IF 
   pcb->tf->cs = 8;
   pcb->tf->eip = (uintptr_t)entry;
 
-  return pcb->tf;
+  return pcb->tf;*/
 
 }
