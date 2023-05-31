@@ -18,7 +18,7 @@ uintptr_t loader(_Protect *as, const char *filename) {
   //ramdisk_read(DEFAULT_ENTRY, 0, len);
   //return (uintptr_t)DEFAULT_ENTRY;
   int fd = fs_open(filename, 0, 0);
-  Log("进入loader() 加载文件名%s",filename);
+  Log("进入loader() 加载文件名%s\n",filename);
   size_t file_size = fs_filesz(fd);
   //fs_read(fd, DEFAULT_ENTRY, file_size);
   //fs_close(fd);
@@ -27,6 +27,7 @@ uintptr_t loader(_Protect *as, const char *filename) {
     paddr = new_page();
     if(i == file_size / PGSIZE){
       fs_read(fd, paddr, file_size % PGSIZE);
+      Log("loader()分页%d个\n", i + 1);
     }
     else{
       fs_read(fd, paddr, PGSIZE);
