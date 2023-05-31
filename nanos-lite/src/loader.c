@@ -18,6 +18,7 @@ uintptr_t loader(_Protect *as, const char *filename) {
   //ramdisk_read(DEFAULT_ENTRY, 0, len);
   //return (uintptr_t)DEFAULT_ENTRY;
   int fd = fs_open(filename, 0, 0);
+  Log("进入loader() 加载文件名%s",filename);
   size_t file_size = fs_filesz(fd);
   //fs_read(fd, DEFAULT_ENTRY, file_size);
   //fs_close(fd);
