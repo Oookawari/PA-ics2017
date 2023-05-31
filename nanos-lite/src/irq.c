@@ -3,6 +3,7 @@ _RegSet* schedule(_RegSet *prev);
 static _RegSet* do_event(_Event e, _RegSet* r) {
   switch (e.event) {
     case _EVENT_IRQ_TIME:
+      Log("触发_EVENT_IRQ_TIME");
       return schedule(r);
       break;
     case _EVENT_SYSCALL:
