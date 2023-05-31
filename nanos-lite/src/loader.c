@@ -22,9 +22,9 @@ uintptr_t loader(_Protect *as, const char *filename) {
   //fs_read(fd, DEFAULT_ENTRY, file_size);
   //fs_close(fd);
   void* paddr;
-  for(int i = 0; i < file_size / PGSIZE; i++) {
+  for(int i = 0; i <= file_size / PGSIZE; i++) {
     paddr = new_page();
-    if(i == file_size / PGSIZE - 1){
+    if(i == file_size / PGSIZE){
       fs_read(fd, paddr, file_size % PGSIZE);
     }
     else{
