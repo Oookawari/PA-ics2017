@@ -108,6 +108,6 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
   fake_trap.eflags = 0x02;
   fake_trap.eip = (uintptr_t)entry;
   memcpy((uint32_t*)(ustack.end - sizeof(_RegSet)), &fake_trap, sizeof(_RegSet));
-  return (_RegSet *)ustack.end - sizeof(_RegSet);
+  return (_RegSet *)(ustack.end - sizeof(_RegSet));
 
 }
