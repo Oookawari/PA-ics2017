@@ -23,7 +23,10 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 
   decoding.jmp_eip = target;
   decoding.is_jmp = true;
+  cpu.IF = 0;
+
 }
 
 void dev_raise_intr() {
+  cpu.INTR = 1;
 }

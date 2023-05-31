@@ -3,6 +3,8 @@
 
 #define TIMER_REQ 32
 
+void raise_intr(uint8_t NO, vaddr_t ret_addr);
+
 typedef struct {
   DHelper decode;
   EHelper execute;
@@ -248,8 +250,15 @@ void exec_wrapper(bool print_flag) {
 
   update_eip();
 
+  if (cpu.INTR && cpu.IF) {
+    cpu.INTR = false;
+    raise_intr(TIMER_REQ, cpu.eip);
+    update_eip();
+  }
+
 #ifdef DIFF_TEST
   void difftest_step(uint32_t);
   difftest_step(eip);
 #endif
+  
 }
