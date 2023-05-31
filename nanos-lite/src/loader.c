@@ -34,20 +34,5 @@ uintptr_t loader(_Protect *as, const char *filename) {
     Log("va: 0x%08x, pa: 0x%08x", DEFAULT_ENTRY + i * PGSIZE, paddr);
   }
   fs_close(fd);
-  return (uintptr_t)DEFAULT_ENTRY;;/*
-  int fd = fs_open(filename, 0, 0);
-    size_t len = fs_filesz(fd);
-    Log("LOAD [%d] %s. Size:%d", fd, filename, len);
-    
-    void *fz_end = DEFAULT_ENTRY + len;
-    void *va, *pa;
-    for(va = DEFAULT_ENTRY; va < fz_end; va += PGSIZE){
-        
-        pa = new_page();
-        _map(as, va, pa);
-        fs_read(fd, pa, (fz_end - va) < PGSIZE ? (fz_end - va) : PGSIZE);
-        Log("va: 0x%08x, pa: 0x%08x", va, pa);
-    }
-    // fs_read(fd, DEFAULT_ENTRY, len);
-    return (uintptr_t)DEFAULT_ENTRY;*/
+  return (uintptr_t)DEFAULT_ENTRY;
 }
