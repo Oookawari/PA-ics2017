@@ -33,7 +33,7 @@ _RegSet* schedule(_RegSet *prev) {
   //current = &pcb[0];
   
   if(pal_times < 100) {pal_times++;current = &pcb[0];}
-  else {current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);pal_times = 0;}
+  else {current = &pcb[1];pal_times = 0;}
   //_switch(&pcb[0].as);
   _switch(&current->as);
   return current->tf;
