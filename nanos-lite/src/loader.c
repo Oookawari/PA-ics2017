@@ -13,7 +13,7 @@ void ramdisk_read(void *buf, off_t offset, size_t len);
 size_t get_ramdisk_size();
 
 uintptr_t loader(_Protect *as, const char *filename) {
-  /*
+  
   //size_t len = get_ramdisk_size();
   //ramdisk_read(DEFAULT_ENTRY, 0, len);
   //return (uintptr_t)DEFAULT_ENTRY;
@@ -30,10 +30,10 @@ uintptr_t loader(_Protect *as, const char *filename) {
     else{
       fs_read(fd, paddr, PGSIZE);
     }
-    _map(as, paddr, DEFAULT_ENTRY + i * PGSIZE);
+    _map(as, DEFAULT_ENTRY + i * PGSIZE, paddr);
   }
   fs_close(fd);
-  return (uintptr_t)DEFAULT_ENTRY;*/
+  return (uintptr_t)DEFAULT_ENTRY;/*
   int fd = fs_open(filename, 0, 0);
     size_t len = fs_filesz(fd);
     Log("LOAD [%d] %s. Size:%d", fd, filename, len);
@@ -48,5 +48,5 @@ uintptr_t loader(_Protect *as, const char *filename) {
         Log("va: 0x%08x, pa: 0x%08x", va, pa);
     }
     // fs_read(fd, DEFAULT_ENTRY, len);
-    return (uintptr_t)DEFAULT_ENTRY;
+    return (uintptr_t)DEFAULT_ENTRY;*/
 }
