@@ -1,7 +1,7 @@
 #include "cpu/exec.h"
 #include "all-instr.h"
 
-#define TIMER_REQ 0x32
+#define TIMER_REQ 32
 
 void raise_intr(uint8_t NO, vaddr_t ret_addr);
 
