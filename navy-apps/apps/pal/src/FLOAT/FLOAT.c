@@ -14,9 +14,9 @@ FLOAT F_mul_F(FLOAT a, FLOAT b) {
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
   assert(b != 0);
-  /*
+  
   FLOAT res = a / b * 0xFFFF;
-  return res;*/
+  return res;/*
   FLOAT x = Fabs(a);
   FLOAT y = Fabs(b);
   FLOAT z = x / y;
@@ -36,7 +36,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
   {
     z = -z;
   }
-  return z;
+  return z;*/
 }
 
 FLOAT f2F(float a) {
