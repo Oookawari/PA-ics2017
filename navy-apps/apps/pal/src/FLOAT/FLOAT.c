@@ -8,8 +8,9 @@ struct float_
   uint32_t sign : 1;
 };
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-  FLOAT res = a * b / 0xFFFF;
-  return res;
+  return ((int64_t)a * (int64_t)b) >> 16;
+  //FLOAT res = a * b / 0xFFFF;
+  //return res;
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
