@@ -78,6 +78,42 @@ make_EHelper(shr) {
   print_asm_template2(shr);
 }
 
+make_EHelper(shld) {
+  rtl_shl(&t0, &id_dest->val, &id_src->val);
+  if(id_src->width == 2) {
+    rtl_li(&t2, 16);
+    
+  }
+  else if(id_src->width == 4){
+    rtl_li(&t2, 32);
+  }
+  rtl_sub(&t2, &t2, &id_src->val);
+  rtl_shr(&t3, &id_src2->val, &t2);
+  rtl_or(&t3, &t2, &t3);
+  operand_write(id_dest, &t3);
+  rtl_update_ZFSF(&t3, id_dest->width);
+  eflags_ignore = true;
+  print_asm_template2(shld);
+}
+
+make_EHelper(shrd) {
+  rtl_shr(&t0, &id_dest->val, &id_src->val);
+  if(id_src->width == 2) {
+    rtl_li(&t2, 16);
+    
+  }
+  else if(id_src->width == 4){
+    rtl_li(&t2, 32);
+  }
+  rtl_sub(&t2, &t2, &id_src->val);
+  rtl_shl(&t3, &id_src2->val, &t2);
+  rtl_or(&t3, &t2, &t3);
+  operand_write(id_dest, &t3);
+  rtl_update_ZFSF(&t3, id_dest->width);
+  eflags_ignore = true;
+  print_asm_template2(shrd);
+}
+
 make_EHelper(setcc) {
   uint8_t subcode = decoding.opcode & 0xf;
   rtl_setcc(&t2, subcode);
