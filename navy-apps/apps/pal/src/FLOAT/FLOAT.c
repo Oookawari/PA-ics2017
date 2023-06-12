@@ -1,7 +1,12 @@
 #include "FLOAT.h"
 #include <stdint.h>
 #include <assert.h>
-
+struct float_
+{
+  uint32_t frac : 23;
+  uint32_t exp : 8;
+  uint32_t sign : 1;
+};
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
   FLOAT res = a * b / 0xFFFF;
   return res;
@@ -23,7 +28,31 @@ FLOAT f2F(float a) {
    * stack. How do you retrieve it to another variable without
    * performing arithmetic operations on it directly?
    */
-
+  struct float_ *f = (struct float_ *)&a;
+  uint32_t res;
+  uint32_t frac;
+  int exp;
+  if ((f->exp & 0xff) == 0xff)
+    assert(0);
+  else if (f->exp == 0)
+  {
+    exp = 1 - 127;
+    frac = (f->frac & 0x7fffff);
+  }
+  else
+  {
+    exp = f->exp - 127;
+    frac = (f->frac & 0x7fffff) | (1 << 23);
+  }
+  if (exp >= 7 && exp < 22)
+    res = frac << (exp - 7);
+  else if (exp < 7 && exp > -32)
+    res = frac >> 7 >> -exp;
+  else
+    assert(0);
+  return (f->sign) ? -res : res;
+  /*
+  
   unsigned int* temp = (unsigned int *)&a;
   unsigned int S = (*temp) & 0x80000000;
   unsigned int E = (*temp) & 0x7F800000;
@@ -55,7 +84,7 @@ FLOAT f2F(float a) {
       FLOAT res = (M >> 7) >> (-E);
       return S ? -res : res;
     }
-  }
+  }*/
 }
 
 FLOAT Fabs(FLOAT a) {
