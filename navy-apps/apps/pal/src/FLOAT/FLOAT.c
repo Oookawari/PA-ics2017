@@ -3,13 +3,14 @@
 #include <assert.h>
 
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-  assert(0);
-  return 0;
+  FLOAT res = a * b / 0xFFFF;
+  return res;
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
-  assert(0);
-  return 0;
+  assert(b != 0);
+  FLOAT res = a / b * 0xFFFF;
+  return res;
 }
 
 FLOAT f2F(float a) {
@@ -23,13 +24,44 @@ FLOAT f2F(float a) {
    * performing arithmetic operations on it directly?
    */
 
-  assert(0);
-  return 0;
+  unsigned int* temp = (unsigned int *)&a;
+  unsigned int S = (*temp) & 0x80000000;
+  unsigned int E = (*temp) & 0x7F800000;
+  unsigned int M = (*temp) & 0x007FFFFF;
+  if(E == 255) {
+    return 0x00000000;//这是NaN，或者正无穷，或者负无穷。不知道该怎么表示
+  }
+  else if(E == 0) {
+    return 0x00000000;//这就是0
+  }
+  else{
+    //阶码部分（E）：根据不同的精度E的位数不同（参照下图float与double的区别），表示小数点向右移动的位数。E>0 表示向右移动，E<0表示向左移动。
+    //先给M加上省去的1
+    M |= 0x00800000;
+    E = E - 127;
+    if(E > 0) {
+      //向右移动3+4*5位，得到原本的表示，再向左移动E+16位，得到我们的表示，也就是说，需要向左移动E-7位
+      //相当于左移（E-7）位
+      if(E >= 7) {
+        FLOAT res = M << (E - 7);
+        return S ? -res : res;
+      }
+      else {
+        FLOAT res = (M >> 7) << E;
+        return S ? -res : res;
+      }
+    }
+    else {
+      FLOAT res = (M >> 7) >> (-E);
+      return S ? -res : res;
+    }
+  }
 }
 
 FLOAT Fabs(FLOAT a) {
-  assert(0);
-  return 0;
+  unsigned int s = a & 0x80000000;
+	if (s != 0) { return 0 - a; }
+	else return a;
 }
 
 /* Functions below are already implemented */
