@@ -5,28 +5,31 @@
 
 typedef int FLOAT;
 
+static inline float F2f(FLOAT a) {
+  float res = (float)a / 0xFFFF;
+  return res;
+}
+
+
 static inline int F2int(FLOAT a) {
-  if ((a & 0x80000000) == 0)
-    return a >> 16;
-  else
-    return -((-a) >> 16);
+  int res = a >> 16;
+  return res;
 }
 
 static inline FLOAT int2F(int a) {
-  if ((a & 0x80000000) == 0)
-    return a << 16;
-  else
-    return -((-a) << 16);
+  assert(a <= 0x7FFF && a >= -0x7FFF);
+  FLOAT res = a << 16;
+  return res;
 }
 
 static inline FLOAT F_mul_int(FLOAT a, int b) {
-  
-  return return a*b;
+  FLOAT res = a * b;
+  return res;
 }
 
 static inline FLOAT F_div_int(FLOAT a, int b) {
-  
-  return a/b;
+  FLOAT res = a / b;
+  return res;
 }
 
 FLOAT f2F(float);
