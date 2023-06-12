@@ -8,7 +8,10 @@ struct float_
   uint32_t sign : 1;
 };
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-  FLOAT res = (int64_t)a * (int64_t)b / 0xFFFF;
+  int64_t temp = (int64_t)a * (int64_t)b;
+  FLOAT res = temp / 0xFFFF;
+  if(temp > 0) {res &= 0x7FFFFFFF;}
+  if(temp < 0) {res |= 0x80000000;}
   return res;
 }
 
