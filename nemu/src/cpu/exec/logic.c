@@ -82,11 +82,11 @@ make_EHelper(shr) {
 make_EHelper(shld) {
   rtl_shl(&t0, &id_dest->val, &id_src->val);
   
-  if(id_src->width == 2) {
+  if(id_src2->width == 2) {
     rtl_li(&t2, 16);
     
   }
-  else if(id_src->width == 4){
+  else if(id_src2->width == 4){
     rtl_li(&t2, 32);
   }
   rtl_subi(&t2, &t2, id_src->val);
@@ -100,11 +100,11 @@ make_EHelper(shld) {
 
 make_EHelper(shrd) {
   rtl_shr(&t0, &id_dest->val, &id_src->val);
-  if(id_src->width == 2) {
+  if(id_src2->width == 2) {
     rtl_li(&t2, 16);
     
   }
-  else if(id_src->width == 4){
+  else if(id_src2->width == 4){
     rtl_li(&t2, 32);
   }
   rtl_subi(&t2, &t2, id_src->val);
