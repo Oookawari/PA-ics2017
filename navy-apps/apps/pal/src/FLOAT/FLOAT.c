@@ -50,7 +50,7 @@ FLOAT f2F(float a) {
    * stack. How do you retrieve it to another variable without
    * performing arithmetic operations on it directly?
    */
-  struct float_ *f = (struct float_ *)&a;
+  /*struct float_ *f = (struct float_ *)&a;
   uint32_t res;
   uint32_t frac;
   int exp;
@@ -73,7 +73,7 @@ FLOAT f2F(float a) {
   else
     assert(0);
   return (f->sign) ? -res : res;
-  /*
+  */
   
   unsigned int* temp = (unsigned int *)&a;
   unsigned int S = (*temp) & 0x80000000;
@@ -106,7 +106,7 @@ FLOAT f2F(float a) {
       FLOAT res = (M >> 7) >> (-E);
       return S ? -res : res;
     }
-  }*/
+  }
 }
 
 FLOAT Fabs(FLOAT a) {
