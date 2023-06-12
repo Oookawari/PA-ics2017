@@ -39,7 +39,6 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
-  assert(0);//not found
   return -1;
 }
 
@@ -90,6 +89,7 @@ ssize_t fs_write(int fd, const void *buf, size_t len) {
   return -1;
 }
 int fs_close(int fd) {
+  file_table[fd].open_offset = 0;
   return 0;
 }
 
