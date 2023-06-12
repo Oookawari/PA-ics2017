@@ -13,10 +13,31 @@ FLOAT F_mul_F(FLOAT a, FLOAT b) {
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
-  assert(b != 0);
+  /*assert(b != 0);
   
   FLOAT res = a / b * 0xFFFF;
-  return res;
+  return res;*/
+  assert(b != 0);
+  FLOAT x = Fabs(a);
+  FLOAT y = Fabs(b);
+  FLOAT z = x / y;
+  x = x % y;
+
+  for (int i = 0; i < 16; i++)
+  {
+    x <<= 1;
+    z <<= 1;
+    if (x >= y)
+    {
+      x -= y;
+      z++;
+    }
+  }
+  if (((a ^ b) & 0x80000000) == 0x80000000)
+  {
+    z = -z;
+  }
+  return z;
 }
 
 FLOAT f2F(float a) {
