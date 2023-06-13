@@ -8,12 +8,32 @@ struct float_
   uint32_t sign : 1;
 };
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-  int64_t temp = (int64_t)a * (int64_t)b;
-  FLOAT res = temp >> 16;
-  return res;
+  return ((int64_t)a * (int64_t)b) >> 16;
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
+  assert(b != 0); // 检查除数是否为零，避免除以零错误
+
+  FLOAT x = Fabs(a);
+  FLOAT y = Fabs(b);
+  FLOAT ret = x / y;
+  x = x % y;
+
+  for (int i = 0; i < 16; i++) {
+    x <<= 1;
+    ret <<= 1;
+    if (x >= y) {
+      x -= y;
+      ret++;
+    }
+  }
+
+  if (((a ^ b) & 0x80000000) == 0x80000000) {
+    ret = -ret;
+  }
+
+  return ret;
+  /*
   assert(b != 0); // 检查除数是否为零，避免除以零错误
 
   FLOAT x = Fabs(a);
@@ -23,7 +43,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
   FLOAT res_l16 = 0x00000000;
   x = x % y;
   uint32_t mask = 0x1;
-  for (int i = 0; i < 16; i++) {
+  for (int i = 15; i >= 0; i--) {
     x <<= 1;
     if (x >= y) {
       x -= y;
@@ -35,7 +55,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
   if (judge == 0) {
     return res;
   }
-  else return -res;
+  else return -res;*/
 }
 
 FLOAT f2F(float a) {
