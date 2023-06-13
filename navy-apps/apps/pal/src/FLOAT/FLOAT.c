@@ -51,6 +51,7 @@ FLOAT f2F(float a) {
   unsigned int S = (*temp) & 0x80000000;
   printf("S: %08x\n", S);
   unsigned int E = (*temp) & 0x7F800000;
+  E = E >> 23;
   printf("E: %08x\n", E);
   unsigned int M = (*temp) & 0x007FFFFF;
   printf("M: %08x\n", M);
