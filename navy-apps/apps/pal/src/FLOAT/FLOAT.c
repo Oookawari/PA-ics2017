@@ -66,11 +66,12 @@ FLOAT f2F(float a) {
     return 0x00000000;//这就是0
   }
   else{
-    
     //阶码部分（E）：根据不同的精度E的位数不同（参照下图float与double的区别），表示小数点向右移动的位数。E>0 表示向右移动，E<0表示向左移动。
     //先给M加上省去的1
     M |= 0x00800000;
+    printf("M 后: %08x\n", M);
     E = E - 127;
+    printf("E 后: %08x\n", E);
     if(E > 0) {
       //向右移动3+4*5位，得到原本的表示，再向左移动E+16位，得到我们的表示，也就是说，需要向左移动E-7位
       //相当于左移（E-7）位
@@ -94,18 +95,10 @@ FLOAT f2F(float a) {
       //return S ? -res : res;
     }
   }
-  if ((f->exp & 0xff) == 0xff)
-    assert(0);
-  else if (f->exp == 0)
-  {
-    exp = 1 - 127;
-    frac = (f->frac & 0x7fffff);
-  }
-  else
-  {
-    exp = f->exp - 127;
-    frac = (f->frac & 0x7fffff) | (1 << 23);
-  }
+  exp = f->exp - 127;
+  frac = (f->frac & 0x7fffff) | (1 << 23);
+  printf("M 后（大佬）: %08x\n", frac);
+  printf("E 后（大佬）: %08x\n", exp);
   if (exp >= 7 && exp < 22)
     res = frac << (exp - 7);
   else if (exp < 7 && exp > -32)
