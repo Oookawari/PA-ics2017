@@ -1,19 +1,42 @@
 #include "FLOAT.h"
 #include <stdint.h>
 #include <assert.h>
+
+struct float_
+{
+  uint32_t frac : 23;
+  uint32_t exp : 8;
+  uint32_t sign : 1;
+};
+
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-  int64_t temp = (int64_t)a * (int64_t)b;
-  FLOAT res = temp >> 16;
-  if(temp > 0) {res &= 0x7FFFFFFF;}
-  if(temp < 0) {res |= 0x80000000;}
-  return res;
+  //int64_t mult = (int64_t)a * (int64_t)b;
+  //FLOAT res = (uint32_t)(mult >> 16);
+  return ((int64_t)a * (int64_t)b) >> 16;
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
-  assert(b != 0);
-  
-  FLOAT res = a / b * 0xFFFF;
-  return res;
+  assert(b != 0); // 检查除数是否为零，避免除以零错误
+
+  FLOAT x = Fabs(a);
+  FLOAT y = Fabs(b);
+  FLOAT ret = x / y;
+  x = x % y;
+
+  for (int i = 0; i < 16; i++) {
+    x <<= 1;
+    ret <<= 1;
+    if (x >= y) {
+      x -= y;
+      ret++;
+    }
+  }
+
+  if (((a ^ b) & 0x80000000) == 0x80000000) {
+    ret = -ret;
+  }
+
+  return ret;
 }
 
 FLOAT f2F(float a) {
@@ -26,45 +49,37 @@ FLOAT f2F(float a) {
    * stack. How do you retrieve it to another variable without
    * performing arithmetic operations on it directly?
    */
-  
-  unsigned int* temp = (unsigned int *)&a;
-  unsigned int S = (*temp) & 0x80000000;
-  unsigned int E = (*temp) & 0x7F800000;
-  unsigned int M = (*temp) & 0x007FFFFF;
-  if(E == 255) {
-    return 0x00000000;//这是NaN，或者正无穷，或者负无穷。不知道该怎么表示
+
+  struct float_ *f = (struct float_ *)&a;
+  uint32_t res;
+  uint32_t frac;
+  int exp;
+  if ((f->exp & 0xff) == 0xff)
+    assert(0);
+  else if (f->exp == 0)
+  {
+    exp = 1 - 127;
+    frac = (f->frac & 0x7fffff);
   }
-  else if(E == 0) {
-    return 0x00000000;//这就是0
+  else
+  {
+    exp = f->exp - 127;
+    frac = (f->frac & 0x7fffff) | (1 << 23);
   }
-  else{
-    //阶码部分（E）：根据不同的精度E的位数不同（参照下图float与double的区别），表示小数点向右移动的位数。E>0 表示向右移动，E<0表示向左移动。
-    //先给M加上省去的1
-    M |= 0x00800000;
-    E = E - 127;
-    if(E > 0) {
-      //向右移动3+4*5位，得到原本的表示，再向左移动E+16位，得到我们的表示，也就是说，需要向左移动E-7位
-      //相当于左移（E-7）位
-      if(E >= 7) {
-        FLOAT res = M << (E - 7);
-        return S ? -res : res;
-      }
-      else {
-        FLOAT res = (M >> 7) << E;
-        return S ? -res : res;
-      }
-    }
-    else {
-      FLOAT res = (M >> 7) >> (-E);
-      return S ? -res : res;
-    }
-  }
+  if (exp >= 7 && exp < 22)
+    res = frac << (exp - 7);
+  else if (exp < 7 && exp > -32)
+    res = frac >> 7 >> -exp;
+  else
+    assert(0);
+  return (f->sign) ? -res : res;
 }
 
 FLOAT Fabs(FLOAT a) {
-  unsigned int s = a & 0x80000000;
-	if (s != 0) { return -a; }
-	else return a;
+  if ((a & 0x80000000) == 0)
+    return a;
+  else
+    return -a;
 }
 
 /* Functions below are already implemented */
