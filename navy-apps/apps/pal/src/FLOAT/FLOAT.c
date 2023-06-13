@@ -56,9 +56,6 @@ FLOAT f2F(float a) {
   unsigned int M = (*temp) & 0x007FFFFF;
   printf("M: %08x\n", M);
   struct float_ *f = (struct float_ *)&a;
-  printf("大佬S: %08x\n", f->sign);
-  printf("大佬E: %08x\n", f->exp);
-  printf("大佬M: %08x\n", f->frac);
   uint32_t res;
   uint32_t frac;
   int exp;
