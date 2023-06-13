@@ -70,26 +70,26 @@ FLOAT f2F(float a) {
     //先给M加上省去的1
     M |= 0x00800000;
     printf("M 后: %08x\n", M);
-    E = E - 127;
+    int Exp = E - 127;
     printf("E 后: %08x\n", E);
-    if(E > 0) {
+    if(Exp > 0) {
       //向右移动3+4*5位，得到原本的表示，再向左移动E+16位，得到我们的表示，也就是说，需要向左移动E-7位
       //相当于左移（E-7）位
-      if(E >= 7) {
-        FLOAT res = M << (E - 7);
+      if(Exp >= 7) {
+        FLOAT res = M << (Exp - 7);
         
         printf("我的结果: %08x\n",res);
         //return S ? -res : res;
       }
       else {
-        FLOAT res = (M >> 7) << E;
+        FLOAT res = (M >> 7) << Exp;
         
         printf("我的结果: %08x\n",res);
         //return S ? -res : res;
       }
     }
     else {
-      FLOAT res = (M >> 7) >> (-E);
+      FLOAT res = (M >> 7) >> (-Exp);
         
       printf("我的结果: %08x\n",res);
       //return S ? -res : res;
