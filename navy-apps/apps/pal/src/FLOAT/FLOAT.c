@@ -46,10 +46,21 @@ FLOAT f2F(float a) {
    * stack. How do you retrieve it to another variable without
    * performing arithmetic operations on it directly?
    */
+  printf("原始数据：%08x\n", (uint32_t)a);
   unsigned int* temp = (unsigned int *)&a;
   unsigned int S = (*temp) & 0x80000000;
+  printf("S: %08x\n", S);
   unsigned int E = (*temp) & 0x7F800000;
+  printf("E: %08x\n", E);
   unsigned int M = (*temp) & 0x007FFFFF;
+  printf("M: %08x\n", M);
+  struct float_ *f = (struct float_ *)&a;
+  printf("大佬S: %08x\n", f->sign);
+  printf("大佬E: %08x\n", f->exp);
+  printf("大佬M: %08x\n", f->frac);
+  uint32_t res;
+  uint32_t frac;
+  int exp;
   if(E == 255) {
     return 0x00000000;//这是NaN，或者正无穷，或者负无穷。不知道该怎么表示
   }
@@ -85,10 +96,6 @@ FLOAT f2F(float a) {
       //return S ? -res : res;
     }
   }
-  struct float_ *f = (struct float_ *)&a;
-  uint32_t res;
-  uint32_t frac;
-  int exp;
   if ((f->exp & 0xff) == 0xff)
     assert(0);
   else if (f->exp == 0)
@@ -107,8 +114,8 @@ FLOAT f2F(float a) {
     res = frac >> 7 >> -exp;
   else
     assert(0);
-    if(f->sign) printf("大佬代码的结果: %08x\n",-res );
-    else printf("大佬代码的结果: %08x\n",res );
+  if(f->sign) printf("大佬代码的结果: %08x\n",-res );
+  else printf("大佬代码的结果: %08x\n",res );
   return (f->sign) ? -res : res;
 }
 
