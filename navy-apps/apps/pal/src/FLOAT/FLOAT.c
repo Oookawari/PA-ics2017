@@ -47,7 +47,7 @@ FLOAT f2F(float a) {
    * performing arithmetic operations on it directly?
    */
   unsigned int* temp = (unsigned int *)&a;
-  printf("原始数据：%08x\n", &temp);
+  printf("原始数据：%08x\n", *temp);
   unsigned int S = (*temp) & 0x80000000;
   printf("S: %08x\n", S);
   unsigned int E = (*temp) & 0x7F800000;
