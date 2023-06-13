@@ -46,7 +46,7 @@ FLOAT f2F(float a) {
    * stack. How do you retrieve it to another variable without
    * performing arithmetic operations on it directly?
    */
-  printf("原始数据：%08x\n", (uint32_t)a);
+  printf("原始数据：%08x\n", a);
   unsigned int* temp = (unsigned int *)&a;
   unsigned int S = (*temp) & 0x80000000;
   printf("S: %08x\n", S);
@@ -55,9 +55,9 @@ FLOAT f2F(float a) {
   unsigned int M = (*temp) & 0x007FFFFF;
   printf("M: %08x\n", M);
   struct float_ *f = (struct float_ *)&a;
-  printf("大佬S: %08x\n", f->sign);
-  printf("大佬E: %08x\n", f->exp);
-  printf("大佬M: %08x\n", f->frac);
+  //printf("大佬S: %08x\n", f->sign);
+  //printf("大佬E: %08x\n", f->exp);
+  //printf("大佬M: %08x\n", f->frac);
   uint32_t res;
   uint32_t frac;
   int exp;
