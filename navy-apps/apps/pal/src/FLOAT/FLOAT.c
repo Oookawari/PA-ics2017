@@ -46,7 +46,6 @@ FLOAT f2F(float a) {
    * stack. How do you retrieve it to another variable without
    * performing arithmetic operations on it directly?
    */
-  /*
   unsigned int* temp = (unsigned int *)&a;
   unsigned int S = (*temp) & 0x80000000;
   unsigned int E = (*temp) & 0x7F800000;
@@ -58,6 +57,7 @@ FLOAT f2F(float a) {
     return 0x00000000;//这就是0
   }
   else{
+    
     //阶码部分（E）：根据不同的精度E的位数不同（参照下图float与double的区别），表示小数点向右移动的位数。E>0 表示向右移动，E<0表示向左移动。
     //先给M加上省去的1
     M |= 0x00800000;
@@ -67,18 +67,24 @@ FLOAT f2F(float a) {
       //相当于左移（E-7）位
       if(E >= 7) {
         FLOAT res = M << (E - 7);
-        return S ? -res : res;
+        
+        printf("我的结果: %08x\n",res);
+        //return S ? -res : res;
       }
       else {
         FLOAT res = (M >> 7) << E;
-        return S ? -res : res;
+        
+        printf("我的结果: %08x\n",res);
+        //return S ? -res : res;
       }
     }
     else {
       FLOAT res = (M >> 7) >> (-E);
-      return S ? -res : res;
+        
+      printf("我的结果: %08x\n",res);
+      //return S ? -res : res;
     }
-  }*/
+  }
   struct float_ *f = (struct float_ *)&a;
   uint32_t res;
   uint32_t frac;
@@ -101,6 +107,8 @@ FLOAT f2F(float a) {
     res = frac >> 7 >> -exp;
   else
     assert(0);
+    if(f->sign) printf("大佬代码的结果: %08x\n",-res );
+    else printf("大佬代码的结果: %08x\n",res );
   return (f->sign) ? -res : res;
 }
 
