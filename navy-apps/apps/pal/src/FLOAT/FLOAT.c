@@ -16,28 +16,6 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 
   FLOAT x = Fabs(a);
   FLOAT y = Fabs(b);
-  FLOAT ret = x / y;
-  x = x % y;
-
-  for (int i = 0; i < 16; i++) {
-    x <<= 1;
-    ret <<= 1;
-    if (x >= y) {
-      x -= y;
-      ret++;
-    }
-  }
-
-  if (((a ^ b) & 0x80000000) == 0x80000000) {
-    ret = -ret;
-  }
-
-  return ret;
-  /*
-  assert(b != 0); // 检查除数是否为零，避免除以零错误
-
-  FLOAT x = Fabs(a);
-  FLOAT y = Fabs(b);
   FLOAT temp1 = x / y;
   FLOAT res_h16 = temp1 << 16;
   FLOAT res_l16 = 0x00000000;
@@ -55,7 +33,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
   if (judge == 0) {
     return res;
   }
-  else return -res;*/
+  else return -res;
 }
 
 FLOAT f2F(float a) {
